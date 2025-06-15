@@ -109,9 +109,16 @@ MainTab:CreateInput({
 })
 
 MainTab:CreateButton({
-    Name = "important script",
+    Name = "velocity net",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Important"))()
+    end
+})
+
+MainTab:CreateButton({
+    Name = "bodyvelocity net (laggy)",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Bodyvelocity%20(laggy)"))()
     end
 })
 
