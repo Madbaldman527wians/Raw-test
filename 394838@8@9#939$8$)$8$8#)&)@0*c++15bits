@@ -123,7 +123,7 @@ MainTab:CreateButton({
 })
 
 MainTab:CreateButton({
-    Name = "Control npcs (perma death)",
+    Name = "Control npcs (perma death and hatdrop)",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Other%20thing"))()
     end
