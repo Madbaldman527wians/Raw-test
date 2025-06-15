@@ -1,21 +1,18 @@
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
-local Window =
-    Rayfield:CreateWindow(
-    {
-        Name = "Network Locker",
-        LoadingTitle = "Network ownerhip injector",
-        LoadingSubtitle = "by IM VIKTOR",
-        Theme = "light",
-        DisableRayfieldPrompts = false,
-        DisableBuildWarnings = false,
-        ConfigurationSaving = {
-            Enabled = true,
-            FolderName = "RayfieldConfigs",
-            FileName = "hub"
-        }
+local Window = Rayfield:CreateWindow({
+    Name = "Network Locker",
+    LoadingTitle = "Network ownerhip injector",
+    LoadingSubtitle = "by IM VIKTOR",
+    Theme = "light",
+    DisableRayfieldPrompts = false,
+    DisableBuildWarnings = false,
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "RayfieldConfigs",
+        FileName = "hub"
     }
-)
+})
 
 local MainTab = Window:CreateTab("Op scripts", 4483362458)
 local MainSection = MainTab:CreateSection("FE Scripts and Simulationradius")
@@ -41,11 +38,9 @@ local function updateUnanchoredParts()
             if not (parent and Players:GetPlayerFromCharacter(parent)) then
                 if not part:FindFirstChildWhichIsA("Motor6D", true) then
                     unanchoredParts[part] = part
-                    part.Destroying:Connect(
-                        function()
-                            unanchoredParts[part] = nil
-                        end
-                    )
+                    part.Destroying:Connect(function()
+                        unanchoredParts[part] = nil
+                    end)
                 end
             end
         end
@@ -74,90 +69,76 @@ local function disableNetworkSleeping()
     end
 end
 
-task.spawn(
-    function()
-        while true do
-            if scriptAtivo then
-                updateUnanchoredParts()
-            end
-            task.wait(3)
-        end
-    end
-)
-
-RunService.Heartbeat:Connect(
-    function()
+task.spawn(function()
+    while true do
         if scriptAtivo then
-            enforceSimulationRadius()
-            disableNetworkSleeping()
+            updateUnanchoredParts()
+        end
+        task.wait(3)
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if scriptAtivo then
+        enforceSimulationRadius()
+        disableNetworkSleeping()
+    end
+end)
+
+MainTab:CreateToggle({
+    Name = "Enable/Disable SimulationRadius",
+    CurrentValue = false,
+    Callback = function(Value)
+        scriptAtivo = Value
+    end
+})
+
+MainTab:CreateInput({
+    Name = "Set SimulationRadius",
+    PlaceholderText = "Enter the amount",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(Text)
+        local num = tonumber(Text)
+        if num then
+            simulationRadius = num
+            print("SimulationRadius:", num)
+        else
+            warn("invalid")
         end
     end
-)
+})
 
-MainTab:CreateToggle(
-    {
-        Name = "Enable/Disable SimulationRadius",
-        CurrentValue = false,
-        Callback = function(Value)
-            scriptAtivo = Value
-        end
-    }
-)
+MainTab:CreateButton({
+    Name = "important script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Important"))()
+    end
+})
 
-MainTab:CreateInput(
-    {
-        Name = "Set SimulationRadius",
-        PlaceholderText = "Enter the amount",
-        RemoveTextAfterFocusLost = false,
-        Callback = function(Text)
-            local num = tonumber(Text)
-            if num then
-                simulationRadius = num
-                print("SimulationRadius:", num)
-            else
-                warn("invalid")
-            end
-        end
-    }
-)
+MainTab:CreateButton({
+    Name = "Control npcs (perma death)",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Other%20thing"))()
+    end
+})
 
-MainTab:CreateButton(
-    {
-        Name = "important script",
-        Callback = function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Important"))()
-        end
-    }
-)
+MainTab:CreateButton({
+    Name = "telekinesis v2",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/0WDhhGd1"))()
+    end
+})
 
-MainTab:CreateButton(
-    {
-        Name = "Control npcs (perma death)",
-        Callback = function()
-            loadstring(
-                game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Other%20thing"))()
-        end
-    }
-)
+MainTab:CreateButton({
+    Name = "Ultra skid Instinct",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Other%20random%20string"))()
+    end
+})
 
-MainTab:CreateButton(
-    {
-        Name = "telekinesis v2",
-        Callback = function()
-            loadstring(game:HttpGet("https://pastebin.com/raw/0WDhhGd1"))()
-        end
-    }
-)
-
-MainTab:CreateButton(
-    {
-        Name = "Ultra skid Instinct",
-        Callback = function()
-            loadstring(
-                game:HttpGet(
-                    "https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Other%20random%20string"
-                )
-            )()
-        end
-    }
-)
+MainTab:CreateButton({
+    Name = "Kill GUI",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Kill%20gui%20v4%20(The%20original%20is%20private)"))()
+    end
+})
