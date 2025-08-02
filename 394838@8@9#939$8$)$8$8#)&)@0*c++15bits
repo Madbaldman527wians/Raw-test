@@ -118,7 +118,7 @@ MainTab:CreateButton({
 MainTab:CreateButton({
     Name = "bodyvelocity net (laggy)",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Bodyvelocity%20(laggy)"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Bodyvelocity%20net%20v2"))()
     end
 })
 
