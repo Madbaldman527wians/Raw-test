@@ -1,190 +1,151 @@
--- Carregar Rayfield
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
--- Criar Janela
 local Window = Rayfield:CreateWindow({
-    Name = "Network Locker",
-    LoadingTitle = "Network ownership injector",
-    LoadingSubtitle = "by IM VIKTOR",
-    Theme = "light",
-    DisableRayfieldPrompts = false,
-    DisableBuildWarnings = false,
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "RayfieldConfigs",
-        FileName = "hub"
-    }
+Name = "Network Locker",
+LoadingTitle = "Network ownerhip injector",
+LoadingSubtitle = "by IM VIKTOR",
+Theme = "light",
+DisableRayfieldPrompts = false,
+DisableBuildWarnings = false,
+ConfigurationSaving = {
+Enabled = true,
+FolderName = "RayfieldConfigs",
+FileName = "hub"
+}
 })
 
--- Serviços
+local MainTab = Window:CreateTab("Op scripts", 4483362458)
+local MainSection = MainTab:CreateSection("FE Scripts and Simulationradius")
+local Divider = MainTab:CreateDivider()
+
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
+
 local localPlayer = Players.LocalPlayer
 local char = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 local rootPart = char:WaitForChild("HumanoidRootPart")
 
--- Variáveis
 local unanchoredParts = {}
 local scriptAtivo = false
 local simulationRadius = 1000
-local lastScan = 0
 
--- Adicionar partes dinamicamente
-Workspace.DescendantAdded:Connect(function(desc)
-	if desc:IsA("BasePart") and not desc.Anchored and not desc:FindFirstChildWhichIsA("Motor6D", true) then
-		local parent = desc.Parent
-		if not (parent and Players:GetPlayerFromCharacter(parent)) then
-			unanchoredParts[desc] = desc
-			desc.Destroying:Connect(function()
-				unanchoredParts[desc] = nil
-			end)
-		end
-	end
+local function updateUnanchoredParts()
+table.clear(unanchoredParts)
+for _, part in ipairs(Workspace:GetDescendants()) do
+if part:IsA("BasePart") and not part.Anchored then
+local parent = part.Parent
+if not (parent and Players:GetPlayerFromCharacter(parent)) then
+if not part:FindFirstChildWhichIsA("Motor6D", true) then
+unanchoredParts[part] = part
+part.Destroying:Connect(function()
+unanchoredParts[part] = nil
 end)
-
--- Atualizar todas as partes (executa raramente)
-local function scanUnanchoredParts()
-	table.clear(unanchoredParts)
-	for _, part in ipairs(Workspace:GetDescendants()) do
-		if part:IsA("BasePart") and not part.Anchored then
-			local parent = part.Parent
-			if not (parent and Players:GetPlayerFromCharacter(parent)) then
-				if not part:FindFirstChildWhichIsA("Motor6D", true) then
-					unanchoredParts[part] = part
-					part.Destroying:Connect(function()
-						unanchoredParts[part] = nil
-					end)
-				end
-			end
-		end
-	end
+end
+end
+end
+end
 end
 
--- Forçar simulation radius
 local function enforceSimulationRadius()
-	for _, player in ipairs(Players:GetPlayers()) do
-		if player == localPlayer then
-			sethiddenproperty(player, "SimulationRadius", simulationRadius)
-		else
-			sethiddenproperty(player, "SimulationRadius", 0/0)
-		end
-	end
+for _, player in ipairs(Players:GetPlayers()) do
+if player == localPlayer then
+sethiddenproperty(player, "SimulationRadius", simulationRadius)
+else
+sethiddenproperty(player, "SimulationRadius", 0 / 0)
+end
+end
 end
 
--- Impedir NetworkIsSleeping
 local function disableNetworkSleeping()
-	local pos = rootPart.Position
-	for part in pairs(unanchoredParts) do
-		if part and part.Parent then
-			if (part.Position - pos).Magnitude <= 256 then
-				sethiddenproperty(part, "NetworkIsSleeping", false)
-			end
-		else
-			unanchoredParts[part] = nil
-		end
-	end
+for part, _ in pairs(unanchoredParts) do
+if part and part.Parent then
+if (part.Position - rootPart.Position).Magnitude < 1000 then
+sethiddenproperty(part, "NetworkIsSleeping", false)
+end
+else
+unanchoredParts[part] = nil
+end
+end
 end
 
--- Loop principal otimizado
-RunService.Heartbeat:Connect(function(dt)
-	if not scriptAtivo then return end
-
-	lastScan += dt
-	if lastScan >= 3 then
-		scanUnanchoredParts()
-		lastScan = 0
-	end
-
-	enforceSimulationRadius()
-	disableNetworkSleeping()
+task.spawn(function()
+while true do
+if scriptAtivo then
+updateUnanchoredParts()
+end
+task.wait(3)
+end
 end)
 
--- GUI: Aba SimulationRadius
-local SimTab = Window:CreateTab("SimulationRadius Configuration", 4483362458)
+RunService.Heartbeat:Connect(function()
+if scriptAtivo then
+enforceSimulationRadius()
+disableNetworkSleeping()
+end
+end)
 
-SimTab:CreateToggle({
-    Name = "Enable/Disable SimulationRadius",
-    CurrentValue = false,
-    Callback = function(Value)
-        scriptAtivo = Value
-    end
+MainTab:CreateToggle({
+Name = "Enable/Disable SimulationRadius",
+CurrentValue = false,
+Callback = function(Value)
+scriptAtivo = Value
+end
 })
 
-SimTab:CreateInput({
-    Name = "Set SimulationRadius",
-    PlaceholderText = "Enter the amount",
-    RemoveTextAfterFocusLost = false,
-    Callback = function(Text)
-        local num = tonumber(Text)
-        if num then
-            simulationRadius = num
-        else
-            warn("invalid")
-        end
-    end
+MainTab:CreateInput({
+Name = "Set SimulationRadius",
+PlaceholderText = "Enter the amount",
+RemoveTextAfterFocusLost = false,
+Callback = function(Text)
+local num = tonumber(Text)
+if num then
+simulationRadius = num
+print("SimulationRadius:", num)
+else
+warn("invalid")
+end
+end
 })
 
-SimTab:CreateButton({
-    Name = "velocity net",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Important"))()
-    end,
+MainTab:CreateButton({
+Name = "velocity net",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Important"))()
+end
 })
 
-SimTab:CreateButton({
-    Name = "bodyvelocity net (Optimized, but unstable)",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Bodyvelocity%20net%20v2"))()
-    end,
+MainTab:CreateButton({
+Name = "bodyvelocity net (laggy)",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Bodyvelocity%20net%20v2"))()
+end
 })
 
--- GUI: Aba Debuggers
-local DebugTab = Window:CreateTab("Debuggers", 4483362458)
-
-DebugTab:CreateToggle({
-    Name = "Check Network Owner",
-    CurrentValue = false,
-    Callback = function(Value)
-        settings().Physics.AreOwnersShown = Value
-    end
+MainTab:CreateButton({
+Name = "Control npcs (perma death and hatdrop)",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Other%20thing"))()
+end
 })
 
-DebugTab:CreateToggle({
-    Name = "Check SimulationRadius",
-    CurrentValue = false,
-    Callback = function(Value)
-        settings().Physics.AreRegionsShown = Value
-    end
+MainTab:CreateButton({
+Name = "telekinesis v2",
+Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/0WDhhGd1"))()
+end
 })
 
--- GUI: Aba Fun Scripts
-local FunTab = Window:CreateTab("Fun Scripts", 4483362458)
-
-FunTab:CreateButton({
-    Name = "Kill GUI",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Kill%20gui%20v4%20(The%20original%20is%20private)"))()
-    end
+MainTab:CreateButton({
+Name = "Ultra skid Instinct",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Other%20random%20string"))()
+end
 })
 
-FunTab:CreateButton({
-    Name = "Ultra Skid Instinct",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Ultra%20skid%20instint"))()
-    end
-})
-
-FunTab:CreateButton({
-    Name = "Control NPCs",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/README.md"))()
-    end
-})
-
-FunTab:CreateButton({
-    Name = "Telekinesis V2",
-    Callback = function()
-        loadstring(game:HttpGet("https://pastebin.com/raw/0WDhhGd1"))()
-    end
+MainTab:CreateButton({
+Name = "Kill GUI",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Madbaldman527wian/Test/refs/heads/main/Kill%20gui%20v4%20(The%20original%20is%20private)"))()
+end
 })
