@@ -144,6 +144,7 @@ function GUI.renderList(callbacks, filter)
 	for _, it in ipairs(AllItems) do it:Destroy() end
 	table.clear(AllItems)
 	local low = toLower(filter or "")
+
 	for _, data in ipairs(callbacks) do
 		if low == "" or string.find(toLower(data.id .. " " .. (data.desc or "")), low, 1, true) then
 			local item = Instance.new("Frame")
@@ -168,7 +169,20 @@ function GUI.renderList(callbacks, filter)
 			hit.Size = UDim2.fromScale(1,1)
 			hit.Text = ""
 			hit.Parent = item
+
+			-- Animação ao clicar
 			hit.MouseButton1Click:Connect(function()
+				local highlight = TweenService:Create(item, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+					BackgroundColor3 = Color3.fromRGB(66, 66, 66)
+				})
+				local reset = TweenService:Create(item, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+					BackgroundColor3 = Color3.fromRGB(46, 46, 46)
+				})
+
+				highlight:Play()
+				highlight.Completed:Wait()
+				reset:Play()
+
 				if typeof(data.fn) == "function" then
 					pcall(data.fn)
 				end
@@ -177,6 +191,7 @@ function GUI.renderList(callbacks, filter)
 			table.insert(AllItems, item)
 		end
 	end
+
 	RunService.Heartbeat:Wait()
 	local totalY = 0
 	for _, child in ipairs(ListHolder:GetChildren()) do
