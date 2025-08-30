@@ -1,0 +1,153 @@
+-- Callbacks externos (retorna tabela)
+return {
+    {
+        id = "Summer",
+        desc = "there is a bit of fog",
+        fn = function()
+            local safeNotify = function(title,text,dur)
+                pcall(function()
+                    game:GetService("StarterGui"):SetCore("SendNotification",{Title=title or"Info",Text=text or"",Duration=dur or 3})
+                end)
+            end
+            safeNotify("Summer","Enjoy",2)
+
+            local Lighting = game:GetService("Lighting")
+            local Terrain = workspace:FindFirstChildOfClass("Terrain")
+
+            -- Configurações básicas
+            Lighting.Ambient = Color3.new(0,0,0)
+            Lighting.Brightness = 2.02
+            Lighting.ColorShift_Bottom = Color3.new(0,0,0)
+            Lighting.ColorShift_Top = Color3.new(1,0.505882,0.098039)
+            Lighting.EnvironmentDiffuseScale = 1
+            Lighting.EnvironmentSpecularScale = 1
+            Lighting.ExposureCompensation = 0
+            Lighting.FogColor = Color3.new(0.690196,0.690196,0.690196)
+            Lighting.FogEnd = 1250
+            Lighting.FogStart = 0
+            Lighting.GlobalShadows = true
+            Lighting.OutdoorAmbient = Color3.new(0.313726,0.294118,0.454902)
+            Lighting.ShadowSoftness = 1
+            Lighting.Technology = Enum.Technology.Future
+            Lighting.TimeOfDay = "09:00:00"
+            Lighting.GeographicLatitude = 40.025013
+
+            -- Terrain
+            if Terrain then
+                Terrain.WaterWaveSize = 0.2
+                Terrain.WaterWaveSpeed = 10
+                Terrain.WaterReflectance = 0.6
+                Terrain.WaterTransparency = 0.95
+                Terrain.WaterColor = Color3.new(0.364706,0.427451,0.470588)
+            end
+
+            -- Atmosphere
+            local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere")
+            if not atmosphere then
+                atmosphere = Instance.new("Atmosphere")
+                atmosphere.Name = "Atmosphere"
+                atmosphere.Parent = Lighting
+            end
+            atmosphere.Decay = Color3.new(0.392157,0.584314,0.705882)
+            atmosphere.Density = 0.459
+            atmosphere.Color = Color3.new(1,1,1)
+            atmosphere.Glare = 1.19
+            atmosphere.Offset = 0.192
+
+            -- Clouds
+            if Terrain then
+                local clouds = Terrain:FindFirstChildOfClass("Clouds")
+                if not clouds then
+                    clouds = Instance.new("Clouds")
+                    clouds.Parent = Terrain
+                end
+                clouds.Enabled = true
+                clouds.Density = 0.262
+                clouds.Color = Color3.new(0.129412,0.129412,0.129412)
+                clouds.Cover = 0.571
+            end
+
+            local function criarEfeito(className, nome, propriedades)
+                local obj = Lighting:FindFirstChild(nome)
+                if not obj then
+                    obj = Instance.new(className)
+                    obj.Name = nome
+                    obj.Parent = Lighting
+                end
+                for propriedade, valor in pairs(propriedades) do
+                    obj[propriedade] = valor
+                end
+            end
+
+            criarEfeito("SunRaysEffect","SunRays",{Enabled=true,Intensity=0.3})
+            criarEfeito("BlurEffect","Blur",{Enabled=true,Size=3.5})
+            criarEfeito("BloomEffect","Bloom",{Enabled=true,Intensity=0.15,Size=56,Threshold=0.72})
+            criarEfeito("ColorCorrectionEffect","ColorCorrection",{Enabled=true,TintColor=Color3.new(1,1,1),Contrast=0.4})
+
+            local sky = Lighting:FindFirstChildOfClass("Sky")
+            if not sky then
+                sky = Instance.new("Sky")
+                sky.Name = "Sky"
+                sky.Parent = Lighting
+            end
+            sky.SkyboxBk = "rbxassetid://252760981"
+            sky.SkyboxDn = "rbxassetid://252763035"
+            sky.SkyboxFt = "rbxassetid://252761439"
+            sky.SkyboxLf = "rbxassetid://252760980"
+            sky.SkyboxRt = "rbxassetid://252760986"
+            sky.SkyboxUp = "rbxassetid://252762652"
+        end
+    },
+    {
+        id = "Edge Detect",
+        desc = "Ativa efeito de contorno",
+        fn = function()
+            local safeNotify = function(title,text,dur)
+                pcall(function()
+                    game:GetService("StarterGui"):SetCore("SendNotification",{Title=title or"Info",Text=text or"",Duration=dur or 3})
+                end)
+            end
+            safeNotify("Edge","Edge Detect ativado (exemplo).",2)
+            print("[Callback] Edge Detect executado")
+        end
+    },
+    {
+        id = "Vignette",
+        desc = "Escurece bordas",
+        fn = function()
+            local safeNotify = function(title,text,dur)
+                pcall(function()
+                    game:GetService("StarterGui"):SetCore("SendNotification",{Title=title or"Info",Text=text or"",Duration=dur or 3})
+                end)
+            end
+            safeNotify("Vignette","Vignette ativado (exemplo).",2)
+            print("[Callback] Vignette executado")
+        end
+    },
+    {
+        id = "Color Correction",
+        desc = "Ajusta saturação/contraste",
+        fn = function()
+            local safeNotify = function(title,text,dur)
+                pcall(function()
+                    game:GetService("StarterGui"):SetCore("SendNotification",{Title=title or"Info",Text=text or"",Duration=dur or 3})
+                end)
+            end
+            safeNotify("Color","Color Correction ativado (exemplo).",2)
+            print("[Callback] Color Correction executado")
+        end
+    },
+    {
+        id = "Chromatic Aberration",
+        desc = "Simula aberração cromática",
+        fn = function()
+            local safeNotify = function(title,text,dur)
+                pcall(function()
+                    game:GetService("StarterGui"):SetCore("SendNotification",{Title=title or"Info",Text=text or"",Duration=dur or 3})
+                end)
+            end
+            safeNotify("Chromatic","Chromatic Aberration ativado (exemplo).",2)
+            print("[Callback] Chromatic Aberration executado")
+        end
+    }
+}
