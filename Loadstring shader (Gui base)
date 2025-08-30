@@ -170,22 +170,27 @@ function GUI.renderList(callbacks, filter)
 			hit.Text = ""
 			hit.Parent = item
 
-			-- Animação ao clicar
+			-- Animação de clique + scroll automático
 			hit.MouseButton1Click:Connect(function()
-				local highlight = TweenService:Create(item, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-					BackgroundColor3 = Color3.fromRGB(66, 66, 66)
-				})
-				local reset = TweenService:Create(item, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-					BackgroundColor3 = Color3.fromRGB(46, 46, 46)
-				})
+				-- cor e escala
+				local highlight = TweenService:Create(item, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(66,66,66)})
+				local reset = TweenService:Create(item, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(46,46,46)})
+				local scaleUp = TweenService:Create(item, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.fromOffset(462,46)})
+				local scaleDown = TweenService:Create(item, TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.fromOffset(452,40)})
 
 				highlight:Play()
+				scaleUp:Play()
 				highlight.Completed:Wait()
 				reset:Play()
+				scaleDown:Play()
 
+				-- Executar callback
 				if typeof(data.fn) == "function" then
 					pcall(data.fn)
 				end
+
+				-- Scroll automático
+				ListHolder.CanvasPosition = Vector2.new(0, item.Position.Y.Offset)
 			end)
 
 			table.insert(AllItems, item)
