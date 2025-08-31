@@ -1,0 +1,53 @@
+--[[ SCRIPT GERADO PELO EXPLORADOR DE ILUMINAÇÃO ]]
+local Lighting = game:GetService("Lighting")
+local Terrain = workspace:FindFirstChildOfClass("Terrain")
+
+-- Configurações gerais
+Lighting.Ambient = Color3.new(0.000000, 0.000000, 0.000000)
+Lighting.Brightness = 2
+Lighting.ColorShift_Bottom = Color3.new(0.000000, 0.000000, 0.000000)
+Lighting.ColorShift_Top = Color3.new(1.000000, 0.505882, 0.098039)
+Lighting.EnvironmentDiffuseScale = 0.10000000149011612
+Lighting.EnvironmentSpecularScale = 0.20000000298023224
+Lighting.ExposureCompensation = 1.5
+Lighting.FogColor = Color3.new(0.752941, 0.752941, 0.752941)
+Lighting.FogEnd = 100000
+Lighting.FogStart = 0
+Lighting.GlobalShadows = true
+Lighting.OutdoorAmbient = Color3.new(0.192157, 0.180392, 0.278431)
+Lighting.ShadowSoftness = 0.10000000149011612
+Lighting.Technology = Enum.Technology.Future
+Lighting.TimeOfDay = "-17:00:58"
+Lighting.GeographicLatitude = 55.00112533569336
+
+-- Propriedades da água
+Terrain.WaterWaveSize = 0.15000000596046448
+Terrain.WaterWaveSpeed = 10
+Terrain.WaterReflectance = 1
+Terrain.WaterTransparency = 0.30000001192092896
+Terrain.WaterColor = Color3.new(0.047059, 0.329412, 0.360784)
+
+-- Atmosphere
+Lighting.Atmosphere.Decay = Color3.new(0.360800, 0.235300, 0.054900)
+Lighting.Atmosphere.Density = 0.31299999356269836
+Lighting.Atmosphere.Color = Color3.new(0.784300, 0.666700, 0.423500)
+Lighting.Atmosphere.Glare = 0
+Lighting.Atmosphere.Offset = 0
+
+-- Efeitos no Lighting
+local bloom = Lighting:FindFirstChild("Bloom") or Instance.new("BloomEffect", Lighting); bloom.Name = "Bloom"
+bloom.Intensity = 1.000000
+bloom.Size = 56.000000
+bloom.Threshold = 2.000000
+local sun = Lighting:FindFirstChild("SunRays") or Instance.new("SunRaysEffect", Lighting); sun.Name = "SunRays"
+sun.Intensity = 0.016000
+local cc = Lighting:FindFirstChild("ColorCorrection") or Instance.new("ColorCorrectionEffect", Lighting); cc.Name = "ColorCorrection"
+cc.Contrast = 0.010000
+cc.TintColor = Color3.new(1.000000, 1.000000, 1.000000)
+local sky = Lighting:FindFirstChild("South Africa Sunset - Elttob") or Instance.new("Sky", Lighting); sky.Name = "South Africa Sunset - Elttob"
+sky.SkyboxBk = "rbxassetid://2968731454"
+sky.SkyboxDn = "rbxassetid://2968731785"
+sky.SkyboxFt = "rbxassetid://2968732027"
+sky.SkyboxLf = "rbxassetid://2968732324"
+sky.SkyboxRt = "rbxassetid://2968732624"
+sky.SkyboxUp = "rbxassetid://2968732831"
