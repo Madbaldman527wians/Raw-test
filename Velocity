@@ -1,0 +1,33 @@
+
+-- Serviços principais
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local workspace = game:GetService("Workspace")
+
+-- Obter o jogador local
+local localPlayer = Players.LocalPlayer
+
+-- Configuração da força do fling
+local flingForce = Vector3.new(0, 25, 0) -- Força mais intensa para aplicar às partes
+
+-- Função para aplicar o fling e remover a colisão
+local function applyFling()
+    for _, part in ipairs(workspace:GetDescendants()) do
+        if part:IsA("BasePart") and not part.Anchored then
+            -- Verifica se a parte pertence ao jogador local
+            local character = localPlayer.Character
+            if not (character and part:IsDescendantOf(character)) then
+                -- Remove a colisão da parte
+                part.CanCollide = false
+                
+                -- Aplica a força de fling
+                part.Velocity = Vector3.new(0, 25, 0) + flingForce
+            end
+        end
+    end
+end
+
+-- Conectar ao loop de Heartbeat para executar constantemente
+RunService.Heartbeat:Connect(function()
+    applyFling()
+end)
