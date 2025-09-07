@@ -1,0 +1,81 @@
+-- Serviços principais
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+-- Jogador local
+local localPlayer = Players.LocalPlayer
+local char = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+local rootPart = char:WaitForChild("HumanoidRootPart")
+
+-- Configurações globais (editáveis fora do script via getgenv)
+getgenv().SimulationRadius = getgenv().SimulationRadius or 1000 -- valor padrão
+getgenv().UpdateInterval = getgenv().UpdateInterval or 3        -- valor padrão
+
+-- Variáveis internas
+local DIST_CHECK = getgenv().SimulationRadius * getgenv().SimulationRadius
+local unanchoredParts = {}
+
+-- Função auxiliar: validar partes
+local function isValidPart(part)
+	if not part:IsA("BasePart") or part.Anchored then
+		return false
+	end
+	local parent = part.Parent
+	if parent and Players:GetPlayerFromCharacter(parent) then
+		return false
+	end
+	if part:FindFirstChildWhichIsA("Motor6D", true) then
+		return false
+	end
+	return true
+end
+
+-- Atualiza lista de partes não ancoradas
+local function updateUnanchoredParts()
+	table.clear(unanchoredParts)
+	for _, part in ipairs(Workspace:GetDescendants()) do
+		if isValidPart(part) then
+			unanchoredParts[part] = true
+		end
+	end
+end
+
+-- Mantém SimulationRadius forçado
+local function enforceSimulationRadius()
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player == localPlayer then
+			sethiddenproperty(player, "SimulationRadius", getgenv().SimulationRadius)
+		else
+			sethiddenproperty(player, "SimulationRadius", 0)
+		end
+	end
+end
+
+-- Desativa NetworkSleeping
+local function disableNetworkSleeping()
+	local rootPos = rootPart.Position
+	DIST_CHECK = getgenv().SimulationRadius * getgenv().SimulationRadius
+	for part in pairs(unanchoredParts) do
+		if part.Parent then
+			if (part.Position - rootPos).Magnitude^2 < DIST_CHECK then
+				sethiddenproperty(part, "NetworkIsSleeping", false)
+			end
+		else
+			unanchoredParts[part] = nil
+		end
+	end
+end
+
+-- Thread para atualizar lista
+task.spawn(function()
+	while task.wait(getgenv().UpdateInterval) do
+		updateUnanchoredParts()
+	end
+end)
+
+-- Loop crítico (não pode parar)
+RunService.Heartbeat:Connect(function()
+	enforceSimulationRadius()
+	disableNetworkSleeping()
+end)
