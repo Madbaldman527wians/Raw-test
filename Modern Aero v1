@@ -1,0 +1,173 @@
+return function()
+    local Players = game:GetService("Players")
+    local TweenService = game:GetService("TweenService")
+    local CoreGui = game:GetService("CoreGui")
+    local CollectionService = game:GetService("CollectionService")
+
+    local LocalPlayer = Players.LocalPlayer
+    local G2L = {}
+
+    --// ScreenGui persistente
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    screenGui.Name = "ModernAeroGUI"
+    screenGui.ResetOnSpawn = false
+    screenGui.Parent = CoreGui
+    CollectionService:AddTag(screenGui, "main")
+    G2L["ScreenGui_1"] = screenGui
+
+    --// Modern Aero (principal)
+    local mainFrame = Instance.new("Frame", screenGui)
+    G2L["Modern Aero_2"] = mainFrame
+    mainFrame.Name = "Modern Aero"
+    mainFrame.BorderSizePixel = 0
+    mainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    mainFrame.BackgroundTransparency = 0.9
+    mainFrame.Position = UDim2.new(0, 148, 0, 30)
+    mainFrame.Size = UDim2.new(0, 624, 0, 316)
+
+    --// Título
+    local title = Instance.new("TextLabel", mainFrame)
+    title.Name = "ModernAeroText"
+    title.Text = "Modern Aero v1"
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    title.BackgroundTransparency = 1
+    title.TextScaled = true
+    title.FontFace = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Light, Enum.FontStyle.Normal)
+    title.Size = UDim2.new(0, 238, 0, 38)
+    title.Position = UDim2.new(0, 2, 0, 2)
+
+    -- Linha decorativa abaixo do título
+    local headerLine = Instance.new("Frame", title)
+    headerLine.Name = "HeaderLine"
+    headerLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    headerLine.BorderSizePixel = 0
+    headerLine.Size = UDim2.new(0, 205, 0, 1)
+    headerLine.Position = UDim2.new(0, 15, 0, 35)
+
+    -- Credits
+    local credits = Instance.new("TextLabel", title)
+    credits.Name = "Credits"
+    credits.Text = "Made by Xaolin"
+    credits.TextColor3 = Color3.fromRGB(255, 255, 255)
+    credits.BackgroundTransparency = 1
+    credits.TextScaled = true
+    credits.FontFace = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Light, Enum.FontStyle.Normal)
+    credits.Size = UDim2.new(0, 198, 0, 18)
+    credits.Position = UDim2.new(0, 20, 0, 42)
+
+    -- Linha inferior do mainFrame
+    local bottomLine = Instance.new("Frame", mainFrame)
+    bottomLine.Name = "Modern?"
+    bottomLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    bottomLine.BorderSizePixel = 0
+    bottomLine.Size = UDim2.new(0, 334, 0, 2)
+    bottomLine.Position = UDim2.new(0, 148, 0, 310)
+
+    -- UIStroke do mainFrame
+    local mainStroke = Instance.new("UIStroke", mainFrame)
+    mainStroke.Transparency = 0.7
+    mainStroke.Thickness = 1.5
+
+    --// Call back Scripts
+    local callbacksLabel = Instance.new("TextLabel", mainFrame)
+    callbacksLabel.Name = "Call back Scripts"
+    callbacksLabel.Text = "Scripts"
+    callbacksLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    callbacksLabel.BackgroundTransparency = 1
+    callbacksLabel.TextScaled = true
+    callbacksLabel.FontFace = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Light, Enum.FontStyle.Normal)
+    callbacksLabel.Size = UDim2.new(0, 124, 0, 28)
+    callbacksLabel.Position = UDim2.new(0, 14, 0, 106)
+
+    -- Base decorativa
+    local base = Instance.new("Frame", callbacksLabel)
+    base.Name = "Base"
+    base.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    base.BorderSizePixel = 0
+    base.Size = UDim2.new(0, 76, 0, 1)
+    base.Position = UDim2.new(0, 24, 0, 30)
+
+    --// ScrollingFrame para callbacks
+    local scroll = Instance.new("ScrollingFrame", callbacksLabel)
+    scroll.Name = "Scripts callbacks"
+    scroll.BackgroundTransparency = 1
+    scroll.BorderSizePixel = 0
+    scroll.Position = UDim2.new(0, 4, 0, 34)
+    scroll.Size = UDim2.new(0, 590, 0, 162)
+    scroll.ScrollBarThickness = 6
+    scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+
+    -- Estética
+    local corner = Instance.new("UICorner", scroll)
+    corner.CornerRadius = UDim.new(0, 4)
+    local stroke = Instance.new("UIStroke", scroll)
+    stroke.Thickness = 0.6
+    stroke.Color = Color3.fromRGB(255, 255, 255)
+
+    -- Função para adicionar callbacks com função associada
+    local callbackPosY = 4
+    local function addCallback(name, func)
+        local btn = Instance.new("TextButton", scroll)
+        btn.TextWrapped = true
+        btn.BorderSizePixel = 0
+        btn.TextXAlignment = Enum.TextXAlignment.Left
+        btn.TextSize = 15
+        btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        btn.BackgroundTransparency = 1
+        btn.Size = UDim2.new(0, 362, 0, 40)
+        btn.Text = name
+        btn.Position = UDim2.new(0, 6, 0, callbackPosY)
+
+        local line = Instance.new("Frame", btn)
+        line.BorderSizePixel = 0
+        line.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        line.Size = UDim2.new(0, 94, 0, 2)
+        line.Position = UDim2.new(0, 4, 0, 30)
+
+        callbackPosY = callbackPosY + 52
+
+        if typeof(func) == "function" then
+            btn.MouseButton1Click:Connect(func)
+        end
+
+        return btn
+    end
+
+    --// Enable / Disable button
+    local toggleFrame = Instance.new("Frame", screenGui)
+    toggleFrame.Name = "Enable / Disable"
+    toggleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    toggleFrame.BackgroundTransparency = 0.8
+    toggleFrame.BorderSizePixel = 0
+    toggleFrame.Size = UDim2.new(0, 58, 0, 60)
+    toggleFrame.Position = UDim2.new(0, 412, 0, -40)
+
+    local toggleCorner = Instance.new("UICorner", toggleFrame)
+    toggleCorner.CornerRadius = UDim.new(1,0)
+    local toggleStroke = Instance.new("UIStroke", toggleFrame)
+    toggleStroke.Transparency = 0.6
+
+    -- Hitbox invisível
+    local toggleBtn = Instance.new("TextButton", toggleFrame)
+    toggleBtn.Size = UDim2.new(1,0,1,0)
+    toggleBtn.BackgroundTransparency = 1
+    toggleBtn.Text = ""
+
+    -- Estado inicial
+    local isVisible = true
+    toggleBtn.MouseButton1Click:Connect(function()
+        isVisible = not isVisible
+        local targetTransparency = isVisible and 0.9 or 1
+        local targetPosition = isVisible and UDim2.new(0,148,0,30) or UDim2.new(0,148,0,-400)
+
+        TweenService:Create(mainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            BackgroundTransparency = targetTransparency,
+            Position = targetPosition
+        }):Play()
+    end)
+
+    return {
+        AddCallback = addCallback
+    }
+end
