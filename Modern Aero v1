@@ -1,6 +1,7 @@
 return function()
     local Players = game:GetService("Players")
     local TweenService = game:GetService("TweenService")
+
     local LocalPlayer = Players.LocalPlayer
     local G2L = {}
 
@@ -32,7 +33,7 @@ return function()
     title.Size = UDim2.new(0, 238, 0, 38)
     title.Position = UDim2.new(0, 2, 0, 2)
 
-    -- Linha decorativa abaixo do título
+    -- Linha decorativa
     local headerLine = Instance.new("Frame", title)
     headerLine.Name = "HeaderLine"
     headerLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -51,7 +52,7 @@ return function()
     credits.Size = UDim2.new(0, 198, 0, 18)
     credits.Position = UDim2.new(0, 20, 0, 42)
 
-    -- Linha inferior do mainFrame
+    -- Linha inferior
     local bottomLine = Instance.new("Frame", mainFrame)
     bottomLine.Name = "Modern?"
     bottomLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -59,7 +60,7 @@ return function()
     bottomLine.Size = UDim2.new(0, 334, 0, 2)
     bottomLine.Position = UDim2.new(0, 148, 0, 310)
 
-    -- UIStroke do mainFrame
+    -- UIStroke
     local mainStroke = Instance.new("UIStroke", mainFrame)
     mainStroke.Transparency = 0.7
     mainStroke.Thickness = 1.5
@@ -75,7 +76,7 @@ return function()
     callbacksLabel.Size = UDim2.new(0, 124, 0, 28)
     callbacksLabel.Position = UDim2.new(0, 14, 0, 106)
 
-    --// ScrollingFrame para callbacks
+    --// ScrollingFrame
     local scroll = Instance.new("ScrollingFrame", callbacksLabel)
     scroll.Name = "Scripts callbacks"
     scroll.BackgroundTransparency = 1
@@ -85,6 +86,7 @@ return function()
     scroll.ScrollBarThickness = 6
     scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
+    -- Estética
     local corner = Instance.new("UICorner", scroll)
     corner.CornerRadius = UDim.new(0, 4)
     local stroke = Instance.new("UIStroke", scroll)
