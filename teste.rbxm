@@ -1,0 +1,517 @@
+local LC = game.Players.LocalPlayer
+local Knife = game:GetObjects(getcustomasset("teste.rbxmx"))[1]
+
+-- Parent no Character
+Knife.Parent = LC.Character
+
+-- Posiciona a faca na mão
+local handler = Knife:FindFirstChild("Handle", true) -- busca recursivamente
+local Trail = Knife:FindFirstChild("Trail", true)
+local LeftArm = LC.Character:FindFirstChild("Left Arm")
+
+if handler and LeftArm then
+    -- Atualiza o Motor6D para conectar corretamente
+    local motor = Knife:FindFirstChildOfClass("Motor6D") or handler:FindFirstChildOfClass("Motor6D")
+    if motor then
+        motor.Part0 = LeftArm
+    end
+end
+
+local A1 = Knife:WaitForChild("Knife").Knife
+for _, v in ipairs(Knife:GetDescendants()) do
+    pcall(function() v.Transparency = 1 end)
+end
+
+--//====================================================\\--
+--||                HANDLE + SSCKNIFE SYSTEM           ||--
+--\\====================================================//--
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+local running=false
+--//====================================================\\--
+--||          ACELERAÇÃO PROGRESSIVA + FOV            ||--
+--\\====================================================//--
+
+local camera = workspace.CurrentCamera
+local baseFOV = camera.FieldOfView
+
+local walkMaxSpeed = 10
+local runMaxSpeed = 50
+local accelerationRate = 45
+
+local currentSpeed = 0
+local targetSpeed = 0
+
+local function TweenFOV(targetFov)
+    TweenService:Create(
+        camera,
+        TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {FieldOfView = targetFov}
+    ):Play()
+end
+
+RunService.Heartbeat:Connect(function(dt)
+    if comboPlaying then return end
+
+    local moveMagnitude = humanoid.MoveDirection.Magnitude
+
+    if moveMagnitude < 0.1 then
+        targetSpeed = 0
+        TweenFOV(baseFOV)
+    else
+        if running then
+            targetSpeed = runMaxSpeed
+            TweenFOV(baseFOV * 1.2)
+        else
+            targetSpeed = walkMaxSpeed
+            TweenFOV(baseFOV * 1.1)
+        end
+    end
+
+    if currentSpeed < targetSpeed then
+        currentSpeed = math.min(currentSpeed + accelerationRate * dt, targetSpeed)
+    elseif currentSpeed > targetSpeed then
+        currentSpeed = math.max(currentSpeed - accelerationRate * dt, targetSpeed)
+    end
+
+    humanoid.WalkSpeed = currentSpeed
+end)
+
+
+local AttackSound = Instance.new("Sound", Knife)
+AttackSound.SoundId = "rbxassetid://437475935"
+AttackSound.Volume = 1
+
+local HitSound = Instance.new("Sound", Knife)
+HitSound.SoundId = "rbxassetid://623904185"
+HitSound.Volume = 1
+
+--//====================================================\\--
+--||                SSCKNIFE FOLLOW SYSTEM             ||--
+--\\====================================================//--
+
+local accessory = character:FindFirstChild("Accessory (SSCKnife)")
+if accessory then
+    local accessoryHandle = accessory:FindFirstChild("Handle")
+    if accessoryHandle then
+        accessoryHandle:BreakJoints()
+        accessoryHandle.CanCollide = false
+        accessoryHandle.Massless = true
+        accessoryHandle.Anchored = false
+
+        local realHandlePart
+if handler:IsA("Motor6D") then
+    realHandlePart = handler.Part1
+else
+    realHandlePart = handler
+end
+
+if accessoryHandle and accessoryHandle:IsA("BasePart") and realHandlePart and realHandlePart:IsA("BasePart") then
+    RunService.Heartbeat:Connect(function()
+        accessoryHandle.CFrame = A1.CFrame * CFrame.Angles(0,math.rad(90),0)
+    end)
+else
+    warn("Handle do acessório ou da faca não é BasePart ou não encontrado")
+end
+end
+else
+    warn("SSCKnife não encontrado")
+end
+
+--//====================================================\\--
+--||                Animator6D Pro V4 (R6)             ||--
+--\\====================================================//--
+
+if getgenv().Animator6DLoadedPro then return end
+getgenv().Animator6DLoadedPro = true
+
+local LocalAssetCache = {}
+local fullModel = nil
+pcall(function()
+    fullModel = game:GetObjects("rbxassetid://107495486817639")[1]
+    if fullModel then fullModel.Parent = workspace end
+end)
+
+local function LoadLocalAsset(id)
+    id = tostring(id):gsub("^rbxassetid://", "")
+    if LocalAssetCache[id] then return LocalAssetCache[id] end
+    local found = fullModel and fullModel:FindFirstChild(id, true)
+    if found then LocalAssetCache[id]=found return found end
+    local ok,obj = pcall(function() return game:GetObjects("rbxassetid://"..id)[1] end)
+    if ok and obj then LocalAssetCache[id]=obj return obj end
+    return nil
+end
+
+local R6Map = {
+    ["Head"]="Neck", ["Torso"]="RootJoint", ["Right Arm"]="Right Shoulder",
+    ["Left Arm"]="Left Shoulder", ["Right Leg"]="Right Hip", ["Left Leg"]="Left Hip",
+    ["Handle"]="Handle"
+}
+
+-- Animator6D Functions
+local function ConvertToTable(kfs)
+    if not (kfs and typeof(kfs)=="Instance" and kfs:IsA("KeyframeSequence")) then
+        for _, obj in ipairs(kfs:GetDescendants()) do
+            if obj:IsA("KeyframeSequence") then kfs=obj break end
+        end
+    end
+    local seq={}
+    for _, frame in ipairs(kfs:GetKeyframes()) do
+        local entry={Time=frame.Time, Data={}}
+        for _, pose in ipairs(frame:GetDescendants()) do
+            if pose:IsA("Pose") and pose.Weight>0 then
+                entry.Data[pose.Name]={CFrame=pose.CFrame}
+            end
+        end
+        table.insert(seq, entry)
+    end
+    table.sort(seq,function(a,b) return a.Time<b.Time end)
+    return seq, kfs.Loop
+end
+
+local function BuildMotorMap(rig)
+    local map, lower = {}, {}
+    for _, m in ipairs(rig:GetDescendants()) do
+        if m:IsA("Motor6D") then
+            map[m.Name]=m
+            lower[string.lower(m.Name)]=m
+        end
+    end
+    return map, lower
+end
+
+local function FindMotor(name,map,lower)
+    local match = R6Map[name] or name
+    return map[match] or lower[string.lower(match)]
+end
+
+local AnimPlayer={}
+AnimPlayer.__index=AnimPlayer
+function AnimPlayer.new(rig,kfs)
+    local self=setmetatable({},AnimPlayer)
+    self.rig=rig
+    self.seq,self.looped=ConvertToTable(kfs)
+    self.map,self.lower=BuildMotorMap(rig)
+    self.time=0
+    self.playing=false
+    self.length=self.seq[#self.seq].Time
+    self.speed=1
+    self.savedC0={}
+    for _,m in pairs(self.map) do self.savedC0[m]=m.C0 end
+    return self
+end
+
+-- Suavização apenas na transição
+function AnimPlayer:Play(speed, loop, transitionTime)
+    transitionTime = transitionTime or 0.15
+    local previousC0s = {}
+    for motor,_ in pairs(self.map) do previousC0s[motor] = motor.C0 end
+
+    self.playing = true
+    self.speed = speed or 1
+    self.looped = (loop==nil) and true or loop
+    self.time = 0
+
+    if self.conn then self.conn:Disconnect() end
+    local transitioning = true
+    local t = 0
+
+    self.conn = RunService.Heartbeat:Connect(function(dt)
+        self.time += dt*self.speed
+        if self.time > self.length then
+            if self.looped then self.time -= self.length else self:Stop(true) return end
+        end
+
+        local prev=self.seq[1]
+        for i=1,#self.seq do
+            if self.seq[i].Time<=self.time then prev=self.seq[i] else break end
+        end
+
+        for joint,data in pairs(prev.Data) do
+            local motor = FindMotor(joint,self.map,self.lower)
+            if motor then
+                local targetC0 = self.savedC0[motor]*data.CFrame
+                if transitioning then
+                    motor.C0 = motor.C0:Lerp(targetC0, math.clamp(dt/transitionTime,0,1))
+                else
+                    motor.C0 = targetC0
+                end
+            end
+        end
+
+        if transitioning then
+            t += dt
+            if t >= transitionTime then transitioning = false end
+        end
+    end)
+end
+
+function AnimPlayer:Stop(restore)
+    self.playing=false
+    if self.conn then self.conn:Disconnect() end
+    if restore then
+        for m,c0 in pairs(self.savedC0) do m.C0=c0 end
+    end
+end
+
+local function disableDefaultAnimations(char)
+    for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do track:Stop() end
+    local animScript = char:FindFirstChild("Animate")
+    if animScript then animScript.Disabled=true end
+end
+
+getgenv().Animator6D=function(idOrInstance,speed,loop)
+    local kfs
+    if typeof(idOrInstance)=="Instance" then kfs=idOrInstance
+    else
+        local asset=LoadLocalAsset(idOrInstance)
+        if asset then kfs=asset:FindFirstChildOfClass("KeyframeSequence") or asset end
+    end
+    if not kfs then return end
+    disableDefaultAnimations(character)
+    if getgenv().currentAnimator6D then getgenv().currentAnimator6D:Stop(true) end
+    local anim=AnimPlayer.new(character,kfs)
+    getgenv().currentAnimator6D=anim
+    anim:Play(speed or 1,loop)
+    return anim
+end
+
+getgenv().Animator6DStop=function()
+    if getgenv().currentAnimator6D then
+        getgenv().currentAnimator6D:Stop(true)
+        getgenv().currentAnimator6D=nil
+    end
+end
+
+warn("[Animator6D Pro V4] Loaded")
+
+--//====================================================\\--
+--||                CARREGAR ANIMAÇÕES                ||--
+--\\====================================================//--
+
+local FolderName="Chara"
+local function LoadKeyframeSequence(fileName)
+    local path = FolderName.."/"..fileName
+    if not isfile(path) then warn("Arquivo não encontrado:",path) return nil end
+    local raw = readfile(path)
+    local data = HttpService:JSONDecode(raw)
+    local sequence = Instance.new("KeyframeSequence")
+    for _, frame in ipairs(data) do
+        local keyframe = Instance.new("Keyframe")
+        keyframe.Time = frame.Time
+        keyframe.Parent = sequence
+        for _, poseData in ipairs(frame.Poses) do
+            local pose = Instance.new("Pose")
+            pose.Name = poseData.Name
+            pose.CFrame = CFrame.new(unpack(poseData.CFrame))
+            pose.Parent = keyframe
+        end
+    end
+    return sequence
+end
+
+local IdleAnim=LoadKeyframeSequence("idle.txt")
+local WalkAnim=LoadKeyframeSequence("walk.txt")
+local RunAnim=LoadKeyframeSequence("run.txt")
+local JumpAnim=LoadKeyframeSequence("jump.txt")
+local FallAnim=LoadKeyframeSequence("fall.txt")
+local ComboAnims={
+    LoadKeyframeSequence("KL1.txt"),
+    LoadKeyframeSequence("KL2.txt"),
+    LoadKeyframeSequence("KL3.txt"),
+    LoadKeyframeSequence("KL4.txt"),
+    LoadKeyframeSequence("KL5.txt")
+}
+
+--//====================================================\\--
+--||                MOVIMENTO + COMBO                 ||--
+--\\====================================================//--
+
+
+local currentAnim=nil
+local comboPlaying=false
+local comboIndex=1
+local comboQueued=false
+local lastAnimData = nil
+local transitionTimeGlobal = 0.15
+
+local function PlayAnimation(anim,speed,loop)
+    if currentAnim==anim then return end
+    currentAnim=anim
+    getgenv().Animator6D(anim,speed or 1,loop~=false,transitionTimeGlobal)
+end
+
+local function GetAnimationLength(anim)
+    local length=0
+    for _,keyframe in ipairs(anim:GetChildren()) do
+        if keyframe:IsA("Keyframe") and keyframe.Time>length then length=keyframe.Time end
+    end
+    return length
+end
+
+-- Atualização de estado humanoid com transição suave
+RunService.Heartbeat:Connect(function(dt)
+    if comboPlaying then return end
+
+    local state = humanoid:GetState()
+    local speed = humanoid.MoveDirection.Magnitude
+    local nextAnim = IdleAnim
+
+    if state==Enum.HumanoidStateType.Jumping then
+        nextAnim = JumpAnim
+    elseif state==Enum.HumanoidStateType.Freefall then
+        nextAnim = FallAnim
+    else
+        if speed < 0.1 then
+            nextAnim = IdleAnim
+        else
+            nextAnim = running and RunAnim or WalkAnim
+        end
+    end
+
+    if currentAnim ~= nextAnim then
+        -- interpolação suave de transição
+        if lastAnimData and getgenv().currentAnimator6D then
+            for joint, data in pairs(lastAnimData) do
+                local motor = FindMotor(joint, getgenv().currentAnimator6D.map, getgenv().currentAnimator6D.lower)
+                if motor then
+                    motor.C0 = motor.C0:Lerp(data, math.clamp(dt/transitionTimeGlobal, 0, 1))
+                end
+            end
+        end
+        PlayAnimation(nextAnim,1,true)
+    end
+
+    -- salvar frame atual para próxima transição
+    if getgenv().currentAnimator6D and getgenv().currentAnimator6D.seq then
+        local frame = getgenv().currentAnimator6D.seq[1].Data
+        lastAnimData = {}
+        for joint, data in pairs(frame) do
+            local motor = FindMotor(joint, getgenv().currentAnimator6D.map, getgenv().currentAnimator6D.lower)
+            if motor then
+                lastAnimData[joint] = getgenv().currentAnimator6D.savedC0[motor]*data.CFrame
+            end
+        end
+    end
+end)
+
+-- GUI
+local ScreenGui=Instance.new("ScreenGui",player.PlayerGui)
+local RunButton=Instance.new("TextButton")
+RunButton.Size=UDim2.new(0,150,0,50)
+RunButton.Position=UDim2.new(0.8,0,0.7,0)
+RunButton.Text="RUN OFF"
+RunButton.Parent=ScreenGui
+RunButton.MouseButton1Click:Connect(function()
+    running = not running
+    RunButton.Text = running and "RUN ON" or "RUN OFF"
+end)
+
+local HitButton=Instance.new("TextButton")
+HitButton.Size=UDim2.new(0,150,0,50)
+HitButton.Position=UDim2.new(0.8,0,0.55,0)
+HitButton.Text="HIT"
+HitButton.Parent=ScreenGui
+
+-- Função de combo
+local function PlayCombo()
+    if comboPlaying then comboQueued=true return end
+    comboPlaying=true
+    comboQueued=false
+
+    local anim=ComboAnims[comboIndex]
+
+    Trail.Enabled=true
+    local originalWalkSpeed=humanoid.WalkSpeed
+    humanoid.WalkSpeed=0
+    humanoid.AutoRotate=false
+
+    AttackSound:Play()
+
+    local RootPart=character:WaitForChild("HumanoidRootPart")
+    local bodyPos=Instance.new("BodyPosition")
+    bodyPos.MaxForce=Vector3.new(100000,0,100000)
+    bodyPos.D=500
+    bodyPos.P=1000
+    bodyPos.Position=RootPart.Position + RootPart.CFrame.LookVector*5
+    bodyPos.Parent=RootPart
+
+    local bpConnection=RunService.Heartbeat:Connect(function()
+        if bodyPos and bodyPos.Parent then
+            bodyPos.Position=RootPart.Position + RootPart.CFrame.LookVector*5
+        end
+    end)
+
+    local hitCooldowns={}
+    local function onHit(otherPart)
+        if not comboPlaying then return end
+        local hum=otherPart.Parent:FindFirstChild("Humanoid")
+        if hum and hum.Parent~=character then
+            local id=hum:GetDebugId()
+            local now=tick()
+            if not hitCooldowns[id] or now-hitCooldowns[id]>0.45 then
+                HitSound:Play()
+                hitCooldowns[id]=now
+            end
+        end
+    end
+
+    -- garante que estamos pegando a parte real, não um Motor6D
+local realHandlePart
+if handler:IsA("Motor6D") then
+    realHandlePart = handler.Part1
+else
+    realHandlePart = handler
+end
+
+-- garante que estamos pegando a parte real do handle da faca
+local realHandlePart
+if handler and handler:IsA("Motor6D") and handler.Part1 then
+    realHandlePart = handler.Part1
+elseif handler and handler:IsA("BasePart") then
+    realHandlePart = handler
+else
+    warn("Handle da faca não encontrado ou inválido")
+end
+
+-- conecta Touched apenas se for BasePart
+local handleConn
+if realHandlePart and realHandlePart:IsA("BasePart") then
+    handleConn = realHandlePart.Touched:Connect(onHit)
+end
+
+
+    PlayAnimation(anim,0.5,false,0.15)
+    task.wait(GetAnimationLength(anim)/0.5*0.85)
+
+    comboIndex+=1
+    if comboIndex>#ComboAnims then comboIndex=1 task.wait(0.13) end
+
+    comboPlaying=false
+    Trail.Enabled=false
+
+    if bpConnection then bpConnection:Disconnect() end
+    if bodyPos then bodyPos:Destroy() end
+    if hitConn then hitConn:Disconnect() end
+    if handleConn then handleConn:Disconnect() end
+
+ 
+    humanoid.AutoRotate=true
+    PlayAnimation(IdleAnim,1,true)
+
+    if comboQueued then
+        comboQueued=false
+        PlayCombo()
+    end
+end
+
+HitButton.MouseButton1Click:Connect(PlayCombo)
+PlayAnimation(IdleAnim,1,true)
