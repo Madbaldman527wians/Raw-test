@@ -1,517 +1,99 @@
-local LC = game.Players.LocalPlayer
-local Knife = game:GetObjects(getcustomasset("teste.rbxmx"))[1]
+<!-- Saved by UniversalSynSaveInstance (Join to Copy Games) https://discord.gg/wx4ThpAsmw --><roblox version="4"><Meta name="ExplicitAutoJoints">true</Meta><Item class="Model" referent="0"><Properties><CoordinateFrame name="ModelMeshCFrame"><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame><Vector3 name="ModelMeshSize"><X>0</X><Y>0</Y><Z>0</Z></Vector3><bool name="NeedsPivotMigration">false</bool><Ref name="PrimaryPart">1</Ref><float name="ScaleFactor">0.800000011920929</float><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>32.488807678222656</X><Y>-604.6138305664062</Y><Z>-233.7601318359375</Z><R00>-1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>-1</R22></CFrame></OptionalCoordinateFrame><BinaryString name="AttributesSerialize">AQAAAAUAAABUcmFpbAYAUGIO9zpYQA==</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[RealKnife]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="Model" referent="2"><Properties><CoordinateFrame name="ModelMeshCFrame"><X>0</X><Y>0</Y><Z>0</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame><Vector3 name="ModelMeshSize"><X>0</X><Y>0</Y><Z>0</Z></Vector3><bool name="NeedsPivotMigration">false</bool><float name="ScaleFactor">0.06911001354455948</float><OptionalCoordinateFrame name="WorldPivotData"><CFrame><X>34.12966537475586</X><Y>-604.6968994140625</Y><Z>-229.97833251953125</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CFrame></OptionalCoordinateFrame><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Knife]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="MeshPart" referent="3"><Properties><Vector3 name="InitialSize"><X>6.282264232635498</X><Y>12.13721752166748</Y><Z>2.3005635738372803</Z></Vector3><Content name="MeshId"><url><![CDATA[rbxassetid://15940652065]]></url></Content><int name="VertexCount">0</int><token name="CollisionFidelity">0</token><token name="FluidFidelityInternal">0</token><bool name="InertiaMigrated">true</bool><Vector3 name="UnscaledCofm"><X>0.1948564648628235</X><Y>-0.3644973337650299</Y><Z>0.0016993326134979725</Z></Vector3><Vector3 name="UnscaledVolInertiaDiags"><X>747.9990844726562</X><Y>101.17028045654297</Y><Z>792.09423828125</Z></Vector3><Vector3 name="UnscaledVolInertiaOffDiags"><X>-138.41693115234375</X><Y>0.251837819814682</Y><Z>0.5249688625335693</Z></Vector3><float name="UnscaledVolume">65.69705200195312</float><CoordinateFrame name="CFrame"><X>-2614.267333984375</X><Y>627.29638671875</Y><Z>625.1283569335938</Z><R00>-0.205834299325943</R00><R01>-0.9785740971565247</R01><R02>-0.004998961463570595</R02><R10>-0.9563378691673279</R10><R11>0.20223495364189148</R11><R12>-0.21099545061588287</R12><R20>0.20748554170131683</R20><R21>-0.03864935040473938</R21><R22>-0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4279831050</Color3uint8><PhysicalProperties name="CustomPhysicalProperties"><CustomPhysics>true</CustomPhysics><Density>0</Density><Friction>0</Friction><Elasticity>0</Elasticity><FrictionWeight>0</FrictionWeight><ElasticityWeight>0</ElasticityWeight><AcousticAbsorption>0</AcousticAbsorption></PhysicalProperties><bool name="Massless">true</bool><token name="Material">1088</token><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><Vector3 name="Velocity"><X>-7.161717121562106e-07</X><Y>0.0016628883313387632</Y><Z>-5.395585276346537e-07</Z></Vector3><Vector3 name="size"><X>0.34451520442962646</X><Y>0.7967843413352966</Y><Z>0.1589919775724411</Z></Vector3><BinaryString name="AttributesSerialize">AQAAAA8AAABDb2xvclBlcmNlbnRhZ2UGmpmZmZmZuT8=</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[A2]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="MeshPart" referent="4"><Properties><Vector3 name="InitialSize"><X>23.80767059326172</X><Y>8.24796199798584</Y><Z>1.2247848510742188</Z></Vector3><Content name="MeshId"><url><![CDATA[rbxassetid://15940652067]]></url></Content><int name="VertexCount">0</int><token name="CollisionFidelity">0</token><token name="FluidFidelityInternal">0</token><bool name="InertiaMigrated">true</bool><Vector3 name="UnscaledCofm"><X>-1.546098232269287</X><Y>0.7624051570892334</Y><Z>0.0003009722859133035</Z></Vector3><Vector3 name="UnscaledVolInertiaDiags"><X>734.7205810546875</X><Y>5452.57861328125</Y><Z>6150.220703125</Z></Vector3><Vector3 name="UnscaledVolInertiaOffDiags"><X>-211.65975952148438</X><Y>-0.2994835674762726</Y><Z>0.03654256835579872</Z></Vector3><float name="UnscaledVolume">167.16281127929688</float><CoordinateFrame name="CFrame"><X>-2614.306884765625</X><Y>626.5126342773438</Y><Z>625.2959594726562</Z><R00>-0.205834299325943</R00><R01>-0.9785740971565247</R01><R02>-0.004998961463570595</R02><R10>-0.9563378691673279</R10><R11>0.20223495364189148</R11><R12>-0.21099545061588287</R12><R20>0.20748554170131683</R20><R21>-0.03864935040473938</R21><R22>-0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4288914085</Color3uint8><bool name="Massless">true</bool><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><Vector3 name="Velocity"><X>-0.0000013195679002819816</X><Y>0.0016628216253593564</Y><Z>-9.941527423507068e-07</Z></Vector3><Vector3 name="size"><X>1.545526146888733</X><Y>0.528764545917511</Y><Z>0.08464489877223969</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Knife]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="Attachment" referent="5"><Properties><CoordinateFrame name="CFrame"><X>0.8161255121231079</X><Y>0.22402344644069672</Y><Z>-0.01994629018008709</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ParticleEmitter" referent="6"><Properties><float name="Brightness">0</float><ColorSequence name="Color">0 0 0 0 0 1 0 0 0 0 </ColorSequence><NumberRange name="FlipbookFramerate">30 30</NumberRange><token name="FlipbookLayout">2</token><bool name="FlipbookStartRandom">true</bool><NumberRange name="Lifetime">0.25 1</NumberRange><bool name="LockedToPart">true</bool><float name="Rate">150</float><NumberRange name="Rotation">-360 360</NumberRange><NumberSequence name="Size">0 1.9672130346298218 0 1 0 0 </NumberSequence><NumberRange name="Speed">0 0</NumberRange><Vector2 name="SpreadAngle"><X>360</X><Y>360</Y></Vector2><Content name="Texture"><url><![CDATA[rbxassetid://11163755167]]></url></Content><float name="TimeScale">0.4000000059604645</float><NumberSequence name="Transparency">0 1 0 0.5005285143852234 0.845714271068573 0 1 1 0 </NumberSequence><float name="ZOffset">-1.2999999523162842</float><BinaryString name="AttributesSerialize">AQAAAAkAAABFbWl0RGVsYXkGAAAAAAAAAAA=</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Aura2]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ParticleEmitter" referent="7"><Properties><float name="Brightness">15</float><ColorSequence name="Color">0 1 0 0 0 1 1 0 0 0 </ColorSequence><NumberRange name="FlipbookFramerate">30 30</NumberRange><token name="FlipbookLayout">2</token><bool name="FlipbookStartRandom">true</bool><NumberRange name="Lifetime">0.25 1</NumberRange><float name="LightEmission">0.699999988079071</float><bool name="LockedToPart">true</bool><float name="Rate">150</float><NumberRange name="Rotation">-360 360</NumberRange><NumberSequence name="Size">0 0.8306012153625488 0 1 0 0 </NumberSequence><NumberRange name="Speed">0 0</NumberRange><Vector2 name="SpreadAngle"><X>360</X><Y>360</Y></Vector2><Content name="Texture"><url><![CDATA[rbxassetid://11163755167]]></url></Content><float name="TimeScale">0.4000000059604645</float><NumberSequence name="Transparency">0 1 0 0.5005285143852234 0.845714271068573 0 1 1 0 </NumberSequence><float name="ZOffset">-0.20000000298023224</float><BinaryString name="AttributesSerialize">AgAAAAkAAABFbWl0RGVsYXkGAAAAAAAAAAAHAAAAUmVjb2xvcgMB</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Aura2]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ParticleEmitter" referent="8"><Properties><Vector3 name="Acceleration"><X>0</X><Y>1.600000023841858</Y><Z>0</Z></Vector3><float name="Brightness">15</float><ColorSequence name="Color">0 1 0 0 0 1 1 0 0 0 </ColorSequence><NumberRange name="Lifetime">0.25 0.75</NumberRange><token name="Orientation">2</token><float name="Rate">150</float><token name="ShapeInOut">1</token><NumberSequence name="Size">0 0 0 0.49836400151252747 0.00906665064394474 0 1 0 0 </NumberSequence><NumberRange name="Speed">0.800000011920929 0.800000011920929</NumberRange><Vector2 name="SpreadAngle"><X>360</X><Y>360</Y></Vector2><NumberSequence name="Squash">0 -2 0 1 -2 0 </NumberSequence><Content name="Texture"><url><![CDATA[rbxassetid://12923405121]]></url></Content><BinaryString name="AttributesSerialize">AgAAAAkAAABFbWl0RGVsYXkGAAAAAAAAAAAHAAAAUmVjb2xvcgMB</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Charge Dots Red]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ParticleEmitter" referent="9"><Properties><float name="Brightness">15</float><NumberRange name="Lifetime">0.25 0.3499999940395355</NumberRange><float name="Rate">15</float><NumberRange name="RotSpeed">-400 400</NumberRange><NumberRange name="Rotation">-360 360</NumberRange><token name="ShapeInOut">1</token><NumberSequence name="Size">0 0 0 0.4978858232498169 0.0437159538269043 0 1 0 0 </NumberSequence><NumberRange name="Speed">0.4000000059604645 0.4000000059604645</NumberRange><Vector2 name="SpreadAngle"><X>360</X><Y>360</Y></Vector2><Content name="Texture"><url><![CDATA[rbxassetid://12923405121]]></url></Content><BinaryString name="AttributesSerialize">AgAAAAkAAABFbWl0RGVsYXkGAAAAAAAAAAAHAAAAUmVjb2xvcgMB</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Charge Dots White]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ParticleEmitter" referent="10"><Properties><float name="Brightness">15</float><ColorSequence name="Color">0 1 0.95686274766922 0.9058823585510254 0 0.5017301440238953 1 0.0313725508749485 0 0 1 1 0 0 0 </ColorSequence><token name="FlipbookLayout">2</token><token name="FlipbookMode">1</token><NumberRange name="Lifetime">0.25 0.5</NumberRange><float name="LightEmission">4</float><bool name="LockedToPart">true</bool><float name="Rate">5</float><NumberSequence name="Size">0 0 0 1 0.3060111999511719 0 </NumberSequence><NumberRange name="Speed">0 0</NumberRange><Content name="Texture"><url><![CDATA[rbxassetid://12926492644]]></url></Content><NumberSequence name="Transparency">0 1 0 0.4948064088821411 0.18857145309448242 0.06940986216068268 1 1 0 </NumberSequence><float name="ZOffset">0.30000001192092896</float><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Circle]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ParticleEmitter" referent="11"><Properties><Vector3 name="Acceleration"><X>0</X><Y>0.800000011920929</Y><Z>0</Z></Vector3><float name="Brightness">50</float><ColorSequence name="Color">0 1 0.15294118225574493 0.003921568859368563 0 1 1 0.15294118225574493 0.003921568859368563 0 </ColorSequence><float name="Drag">10</float><NumberRange name="Lifetime">1 2</NumberRange><float name="LightEmission">5</float><NumberRange name="RotSpeed">-300 300</NumberRange><NumberRange name="Rotation">-360 360</NumberRange><NumberSequence name="Size">0 0 0 0.4860000014305115 0.01600000075995922 0.01600000075995922 1 0 0 </NumberSequence><NumberRange name="Speed">8 8</NumberRange><Vector2 name="SpreadAngle"><X>360</X><Y>360</Y></Vector2><Content name="Texture"><url><![CDATA[rbxassetid://13081525122]]></url></Content><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Dots]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="PointLight" referent="12"><Properties><float name="Range">3</float><float name="Brightness">0.30000001192092896</float><Color3 name="Color"><R>1</R><G>0</G><B>0</B></Color3><bool name="Shadows">true</bool><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="PointLight" referent="13"><Properties><float name="Range">6</float><float name="Brightness">0.30000001192092896</float><Color3 name="Color"><R>1</R><G>0</G><B>0</B></Color3><bool name="Shadows">true</bool><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="PointLight" referent="14"><Properties><float name="Range">12</float><float name="Brightness">0.30000001192092896</float><Color3 name="Color"><R>1</R><G>0</G><B>0</B></Color3><bool name="Shadows">true</bool><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Part" referent="15"><Properties><token name="shape">1</token><token name="formFactorRaw">1</token><token name="BottomSurface">0</token><CoordinateFrame name="CFrame"><X>-2614.28515625</X><Y>626.6499633789062</Y><Z>625.2742919921875</Z><R00>-0.004998961463570595</R00><R01>0.205834299325943</R01><R02>0.9785740971565247</R02><R10>-0.21099545061588287</R10><R11>0.9563378691673279</R11><R12>-0.20223495364189148</R12><R20>-0.9774745106697083</R20><R21>-0.20748554170131683</R21><R22>0.03864935040473938</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4288914085</Color3uint8><bool name="EnableFluidForces">false</bool><bool name="Massless">true</bool><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><token name="TopSurface">0</token><float name="Transparency">1</float><Vector3 name="Velocity"><X>-0.0000012138408465034445</X><Y>0.0016628174344077706</Y><Z>-9.144987416220829e-07</Z></Vector3><Vector3 name="size"><X>0.9173577427864075</X><Y>1.7572609186172485</Y><Z>1.5867098569869995</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Charge dots handler]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Attachment" referent="16"><Properties><CoordinateFrame name="CFrame"><X>-0.5774475336074829</X><Y>0.22402344644069672</Y><Z>-0.02496337890625</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ManualWeld" referent="17"><Properties><CoordinateFrame name="C1"><X>0.00791015662252903</X><Y>-0.14029847085475922</Y><Z>0.00732421875</Z><R00>0</R00><R01>0</R01><R02>1</R02><R10>-1</R10><R11>0</R11><R12>0</R12><R20>0</R20><R21>-1</R21><R22>0</R22></CoordinateFrame><Ref name="Part0">4</Ref><Ref name="Part1">15</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Weld]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="SurfaceAppearance" referent="18"><Properties><Color3 name="Color"><R>1</R><G>0</G><B>0</B></Color3><Content name="ColorMap"><url><![CDATA[rbxassetid://134475920723165]]></url></Content><Content name="MetalnessMap"><url><![CDATA[rbxassetid://134475920723165]]></url></Content><Content name="RoughnessMap"><url><![CDATA[rbxassetid://134475920723165]]></url></Content><Content name="TexturePack"><url><![CDATA[rbxassetid://119616968203971]]></url></Content><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item></Item><Item class="MeshPart" referent="19"><Properties><Vector3 name="InitialSize"><X>10.114837646484375</X><Y>0.939789891242981</Y><Z>2.0101912021636963</Z></Vector3><Content name="MeshId"><url><![CDATA[rbxassetid://15940652059]]></url></Content><int name="VertexCount">0</int><token name="CollisionFidelity">0</token><token name="FluidFidelityInternal">0</token><bool name="InertiaMigrated">true</bool><Vector3 name="UnscaledCofm"><X>-0.07270491868257523</X><Y>1.6944521519235423e-07</Y><Z>-0.000012735115888062865</Z></Vector3><Vector3 name="UnscaledVolInertiaDiags"><X>1.5974475145339966</X><Y>59.40292739868164</Y><Z>58.25798034667969</Z></Vector3><Vector3 name="UnscaledVolInertiaOffDiags"><X>0.0000059014578255300876</X><Y>0.00017840164946392179</Y><Z>-0.000043838175770360976</Z></Vector3><float name="UnscaledVolume">4.126461029052734</float><CoordinateFrame name="CFrame"><X>-2614.1435546875</X><Y>627.6976318359375</Y><Z>625.039306640625</Z><R00>-0.205834299325943</R00><R01>-0.9785740971565247</R01><R02>-0.004998961463570595</R02><R10>-0.9563378691673279</R10><R11>0.20223495364189148</R11><R12>-0.21099545061588287</R12><R20>0.20748554170131683</R20><R21>-0.03864935040473938</R21><R22>-0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4293900344</Color3uint8><bool name="Massless">true</bool><token name="Material">1088</token><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><Vector3 name="Velocity"><X>-4.0726069983065827e-07</X><Y>0.0016628447920084</Y><Z>-3.0682721785524336e-07</Z></Vector3><Vector3 name="size"><X>0.6482436060905457</X><Y>0.06494889408349991</Y><Z>0.13892434537410736</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[A3]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="MeshPart" referent="20"><Properties><Vector3 name="InitialSize"><X>12.853041648864746</X><Y>4.3121337890625</Y><Z>1.971472144126892</Z></Vector3><Content name="MeshId"><url><![CDATA[rbxassetid://15940652061]]></url></Content><int name="VertexCount">0</int><token name="CollisionFidelity">0</token><token name="FluidFidelityInternal">0</token><bool name="InertiaMigrated">true</bool><Vector3 name="UnscaledCofm"><X>0.3512999713420868</X><Y>0.10841686278581619</Y><Z>-1.8021948733348836e-07</Z></Vector3><Vector3 name="UnscaledVolInertiaDiags"><X>69.74319458007812</X><Y>854.2255859375</Y><Z>895.1533813476562</Z></Vector3><Vector3 name="UnscaledVolInertiaOffDiags"><X>0.986412525177002</X><Y>-0.0005290147382766008</Y><Z>0.00017226807540282607</Z></Vector3><float name="UnscaledVolume">65.82144165039062</float><CoordinateFrame name="CFrame"><X>-2614.13427734375</X><Y>627.700927734375</Y><Z>625.03857421875</Z><R00>-0.205834299325943</R00><R01>-0.9785740971565247</R01><R02>-0.004998961463570595</R02><R10>-0.9563378691673279</R10><R11>0.20223495364189148</R11><R12>-0.21099545061588287</R12><R20>0.20748554170131683</R20><R21>-0.03864935040473938</R21><R22>-0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4285136896</Color3uint8><bool name="Massless">true</bool><token name="Material">512</token><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><Vector3 name="Velocity"><X>-4.0472326645613066e-07</X><Y>0.001662838039919734</Y><Z>-3.0491554525724496e-07</Z></Vector3><Vector3 name="size"><X>0.8207812309265137</X><Y>0.36271151900291443</Y><Z>0.13624846935272217</Z></Vector3><BinaryString name="AttributesSerialize">AgAAAA8AAABDb2xvclBlcmNlbnRhZ2UGAAAAAAAA4D8HAAAAUmVjb2xvcgMB</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[A1]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Part" referent="21"><Properties><token name="shape">1</token><token name="formFactorRaw">1</token><token name="BottomSurface">0</token><CoordinateFrame name="CFrame"><X>-2614.345947265625</X><Y>626.4340209960938</Y><Z>625.2369384765625</Z><R00>-0.9785740971565247</R00><R01>-0.205834299325943</R01><R02>0.004998961463570595</R02><R10>0.20223495364189148</R10><R11>-0.9563378691673279</R11><R12>0.21099545061588287</R12><R20>-0.03864935040473938</R20><R21>0.20748554170131683</R21><R22>0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4293900344</Color3uint8><bool name="Massless">true</bool><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><token name="TopSurface">0</token><float name="Transparency">1</float><Vector3 name="Velocity"><X>-0.000001380090679958812</X><Y>0.0016628858866170049</Y><Z>-0.0000010397502592240926</Z></Vector3><Vector3 name="size"><X>0.7043730020523071</X><Y>1.4669359922409058</Y><Z>0.019259540364146233</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[L4]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="SurfaceLight" referent="22"><Properties><float name="Range">1</float><Color3 name="Color"><R>1</R><G>0</G><B>0</B></Color3><bool name="Shadows">true</bool><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item></Item><Item class="Part" referent="23"><Properties><token name="shape">1</token><token name="formFactorRaw">1</token><token name="BottomSurface">0</token><CoordinateFrame name="CFrame"><X>-2614.3466796875</X><Y>626.4057006835938</Y><Z>625.105712890625</Z><R00>0.9785740971565247</R00><R01>-0.205834299325943</R01><R02>-0.004998961463570595</R02><R10>-0.20223495364189148</R10><R11>-0.9563378691673279</R11><R12>-0.21099545061588287</R12><R20>0.03864935040473938</R20><R21>0.20748554170131683</R21><R22>-0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4293900344</Color3uint8><bool name="Massless">true</bool><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><token name="TopSurface">0</token><float name="Transparency">1</float><Vector3 name="Velocity"><X>-0.0000014018939964444144</X><Y>0.0016629626043140888</Y><Z>-0.0000010561767567196512</Z></Vector3><Vector3 name="size"><X>0.7043730020523071</X><Y>1.4669359922409058</Y><Z>0.019259540364146233</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[L2]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="SurfaceLight" referent="24"><Properties><float name="Angle">81</float><float name="Range">0.30000001192092896</float><float name="Brightness">4</float><Color3 name="Color"><R>1</R><G>0</G><B>0</B></Color3><bool name="Shadows">true</bool><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item></Item><Item class="Part" referent="25"><Properties><token name="shape">1</token><token name="formFactorRaw">1</token><token name="BottomSurface">0</token><CoordinateFrame name="CFrame"><X>-2614.3447265625</X><Y>626.4898071289062</Y><Z>625.4951171875</Z><R00>-0.9785740971565247</R00><R01>-0.205834299325943</R01><R02>0.004998961463570595</R02><R10>0.20223495364189148</R10><R11>-0.9563378691673279</R11><R12>0.21099545061588287</R12><R20>-0.03864935040473938</R20><R21>0.20748554170131683</R21><R22>0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4293900344</Color3uint8><bool name="Massless">true</bool><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><token name="TopSurface">0</token><float name="Transparency">1</float><Vector3 name="Velocity"><X>-0.0000013371420664043399</X><Y>0.0016627352451905608</Y><Z>-0.0000010073931662191171</Z></Vector3><Vector3 name="size"><X>0.7043730020523071</X><Y>1.4669359922409058</Y><Z>0.019259540364146233</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[L3]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="SurfaceLight" referent="26"><Properties><float name="Angle">81</float><float name="Range">0.30000001192092896</float><float name="Brightness">4</float><Color3 name="Color"><R>1</R><G>0</G><B>0</B></Color3><bool name="Shadows">true</bool><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item></Item><Item class="Part" referent="27"><Properties><token name="shape">1</token><token name="formFactorRaw">1</token><token name="BottomSurface">0</token><CoordinateFrame name="CFrame"><X>-2614.34521484375</X><Y>626.4634399414062</Y><Z>625.3731689453125</Z><R00>0.9785740971565247</R00><R01>-0.205834299325943</R01><R02>-0.004998961463570595</R02><R10>-0.20223495364189148</R10><R11>-0.9563378691673279</R11><R12>-0.21099545061588287</R12><R20>0.03864935040473938</R20><R21>0.20748554170131683</R21><R22>-0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4293900344</Color3uint8><bool name="Massless">true</bool><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><token name="TopSurface">0</token><float name="Transparency">1</float><Vector3 name="Velocity"><X>-0.0000013574415334005607</X><Y>0.001662806374952197</Y><Z>-0.000001022686660689942</Z></Vector3><Vector3 name="size"><X>0.7043730020523071</X><Y>1.4669359922409058</Y><Z>0.019259540364146233</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[L1]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="SurfaceLight" referent="28"><Properties><float name="Range">1</float><Color3 name="Color"><R>1</R><G>0</G><B>0</B></Color3><bool name="Shadows">true</bool><BinaryString name="AttributesSerialize">AQAAAAcAAABSZWNvbG9yAwE=</BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item></Item></Item><Item class="Motor6D" referent="29"><Properties><CoordinateFrame name="C0"><X>0.00004882812572759576</X><Y>-0.7790436148643494</Y><Z>-0.18144531548023224</Z><R00>0</R00><R01>0</R01><R02>-1</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>1</R20><R21>0</R21><R22>0</R22></CoordinateFrame><Ref name="Part0">30</Ref><Ref name="Part1">1</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Handle]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Trail" referent="31"><Properties><Ref name="Attachment0">5</Ref><Ref name="Attachment1">16</Ref><float name="Brightness">10</float><ColorSequence name="Color">0 1 0 0 0 1 1 0 0 0 </ColorSequence><bool name="Enabled">false</bool><float name="Lifetime">1</float><float name="LightEmission">0.699999988079071</float><float name="MinLength">0</float><NumberSequence name="Transparency">0 0 0 0.11999999731779099 0 0 1 1 0 </NumberSequence><NumberSequence name="WidthScale">0 1 0 1 0 0 </NumberSequence><BinaryString name="AttributesSerialize">AgAAAAcAAABFbmFibGVkAgAAAAAHAAAAUmVjb2xvcgMB</BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Part" referent="32"><Properties><token name="shape">1</token><token name="formFactorRaw">1</token><token name="BottomSurface">0</token><CoordinateFrame name="CFrame"><X>-2614.2080078125</X><Y>627.4649658203125</Y><Z>625.097412109375</Z><R00>-0.205834299325943</R00><R01>-0.9785740971565247</R01><R02>-0.004998961463570595</R02><R10>-0.9563378691673279</R10><R11>0.20223495364189148</R11><R12>-0.21099545061588287</R12><R20>0.20748554170131683</R20><R21>-0.03864935040473938</R21><R22>-0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><Color3uint8 name="Color3uint8">4288914085</Color3uint8><bool name="Massless">true</bool><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><token name="TopSurface">0</token><Vector3 name="Velocity"><X>-5.863858518750931e-07</X><Y>0.0016628606244921684</Y><Z>-4.417788090904651e-07</Z></Vector3><Vector3 name="size"><X>0.08000000566244125</X><Y>0.08000000566244125</Y><Z>0.08000000566244125</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[PartTrail]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Part" referent="1"><Properties><token name="shape">1</token><token name="formFactorRaw">1</token><token name="BottomSurface">0</token><CoordinateFrame name="CFrame"><X>-2614.187744140625</X><Y>627.5906982421875</Y><Z>625.0523071289062</Z><R00>0.205834299325943</R00><R01>-0.9785740971565247</R01><R02>0.004998961463570595</R02><R10>0.9563378691673279</R10><R11>0.20223495364189148</R11><R12>0.21099545061588287</R12><R20>-0.20748554170131683</R20><R21>-0.03864935040473938</R21><R22>0.9774745106697083</R22></CoordinateFrame><bool name="CanCollide">false</bool><bool name="CanQuery">false</bool><bool name="CanTouch">false</bool><bool name="CastShadow">false</bool><string name="CollisionGroup"><![CDATA[Obj]]></string><int name="CollisionGroupId">2</int><Color3uint8 name="Color3uint8">4288914085</Color3uint8><bool name="EnableFluidForces">false</bool><bool name="Massless">true</bool><string name="MaterialVariantSerialized"></string><Vector3 name="RotVelocity"><X>5.800227995678142e-07</X><Y>-9.56323660262744e-15</Y><Z>-7.698810122747091e-07</Z></Vector3><token name="TopSurface">0</token><float name="Transparency">1</float><Vector3 name="Velocity"><X>-4.895868528365099e-07</X><Y>0.0016628712182864547</Y><Z>-3.688511469590594e-07</Z></Vector3><Vector3 name="size"><X>0.4653279781341553</X><Y>0.21234075725078583</Y><Z>0.2260953038930893</Z></Vector3><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Handle]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="Weld" referent="33"><Properties><CoordinateFrame name="C0"><X>-0.3136138916015625</X><Y>0.015393066219985485</Y><Z>0.01181640662252903</Z><R00>-1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>-1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">3</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[A2]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Weld" referent="34"><Properties><CoordinateFrame name="C0"><X>0.11406250298023224</X><Y>-0.02108154259622097</Y><Z>0.01010742224752903</Z><R00>-1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>-1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">19</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[A3]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Weld" referent="35"><Properties><CoordinateFrame name="C0"><X>-1.1060714721679688</X><Y>-0.11077576130628586</Y><Z>0.01010742224752903</Z><R00>-1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>-1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">4</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Knife]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Weld" referent="36"><Properties><CoordinateFrame name="C0"><X>-1.1770248413085938</X><Y>-0.08621521294116974</Y><Z>0.07502441853284836</Z><R00>0</R00><R01>-1</R01><R02>-0</R02><R10>-1</R10><R11>0</R11><R12>-0</R12><R20>0</R20><R21>0</R21><R22>-1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">27</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[L1]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Weld" referent="37"><Properties><CoordinateFrame name="C0"><X>-1.1770248413085938</X><Y>-0.08621521294116974</Y><Z>-0.1986083984375</Z><R00>0</R00><R01>-1</R01><R02>-0</R02><R10>-1</R10><R11>0</R11><R12>-0</R12><R20>0</R20><R21>0</R21><R22>-1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">23</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[L2]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Weld" referent="38"><Properties><CoordinateFrame name="C0"><X>-1.1770248413085938</X><Y>-0.08621521294116974</Y><Z>0.19978027045726776</Z><R00>0</R00><R01>-1</R01><R02>0</R02><R10>1</R10><R11>0</R11><R12>-0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">25</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[L3]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Weld" referent="39"><Properties><CoordinateFrame name="C0"><X>-1.1770248413085938</X><Y>-0.08621521294116974</Y><Z>-0.06437988579273224</Z><R00>0</R00><R01>-1</R01><R02>0</R02><R10>1</R10><R11>0</R11><R12>-0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">21</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[L4]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Weld" referent="40"><Properties><CoordinateFrame name="C0"><X>0.11926116794347763</X><Y>-0.029510498046875</Y><Z>0.01010742224752903</Z><R00>-1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>-1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">20</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[A1]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ManualWeld" referent="41"><Properties><CoordinateFrame name="C0"><X>0</X><Y>0</Y><Z>0</Z><R00>-1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>-1</R22></CoordinateFrame><CoordinateFrame name="C1"><X>-0.13375245034694672</X><Y>0.00732421875</Y><Z>0.01749267615377903</Z><R00>1</R00><R01>0</R01><R02>0</R02><R10>0</R10><R11>1</R11><R12>0</R12><R20>0</R20><R21>0</R21><R22>1</R22></CoordinateFrame><Ref name="Part0">1</Ref><Ref name="Part1">32</Ref><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Weld]]></string><BinaryString name="Tags"></BinaryString></Properties></Item></Item></Item><Item class="Folder" referent="42"><Properties><string name="Name"><![CDATA[Players]]></string></Properties><Item class="Folder" referent="43"><Properties><BinaryString name="AttributesSerialize">CwAAAAgAAABDYW50Q2hhdAICAAAAW10DAAAARlBTBgAAAAAAAPA/CwAAAEZ1bGx5TG9hZGVkAwENAAAAR29rdVdoaXRlbGlzdAMBCAAAAExhbmd1YWdlAgIAAABwdAYAAABMb2FkZWQDARMAAABQYXNzZWRMb2FkaW5nU2NyZWVuAwEIAAAAUGFzdExvYWQDAQQAAABQb25nBgAAwMlnZ9pBBAAAAFNraXADAQ8AAABaYW1hc3VXaGl0ZWxpc3QDAQ==</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[[Player] create_signal]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="Folder" referent="44"><Properties><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[PlayerScripts]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Folder" referent="45"><Properties><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[PlayerGui]]></string><BinaryString name="Tags"></BinaryString></Properties><Item class="LocalScript" referent="46"><Properties><ProtectedString name="Source"><![CDATA[-- Saved by UniversalSynSaveInstance (Join to Copy Games) https://discord.gg/wx4ThpAsmw
 
--- Parent no Character
-Knife.Parent = LC.Character
+-- Decompiled with Medal's Decompiler. (Modified by SignalHub)
+-- Decompiled at: 2/24/2026, 1:52:56 PM
+-- Cached decompilation
 
--- Posiciona a faca na mão
-local handler = Knife:FindFirstChild("Handle", true) -- busca recursivamente
-local Trail = Knife:FindFirstChild("Trail", true)
-local LeftArm = LC.Character:FindFirstChild("Left Arm")
-
-if handler and LeftArm then
-    -- Atualiza o Motor6D para conectar corretamente
-    local motor = Knife:FindFirstChildOfClass("Motor6D") or handler:FindFirstChildOfClass("Motor6D")
-    if motor then
-        motor.Part0 = LeftArm
-    end
-end
-
-local A1 = Knife:WaitForChild("Knife").Knife
-for _, v in ipairs(Knife:GetDescendants()) do
-    pcall(function() v.Transparency = 1 end)
-end
-
---//====================================================\\--
---||                HANDLE + SSCKNIFE SYSTEM           ||--
---\\====================================================//--
-
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
-local HttpService = game:GetService("HttpService")
-
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-
-local running=false
---//====================================================\\--
---||          ACELERAÇÃO PROGRESSIVA + FOV            ||--
---\\====================================================//--
-
-local camera = workspace.CurrentCamera
-local baseFOV = camera.FieldOfView
-
-local walkMaxSpeed = 10
-local runMaxSpeed = 50
-local accelerationRate = 45
-
-local currentSpeed = 0
-local targetSpeed = 0
-
-local function TweenFOV(targetFov)
-    TweenService:Create(
-        camera,
-        TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        {FieldOfView = targetFov}
-    ):Play()
-end
-
-RunService.Heartbeat:Connect(function(dt)
-    if comboPlaying then return end
-
-    local moveMagnitude = humanoid.MoveDirection.Magnitude
-
-    if moveMagnitude < 0.1 then
-        targetSpeed = 0
-        TweenFOV(baseFOV)
-    else
-        if running then
-            targetSpeed = runMaxSpeed
-            TweenFOV(baseFOV * 1.2)
-        else
-            targetSpeed = walkMaxSpeed
-            TweenFOV(baseFOV * 1.1)
-        end
-    end
-
-    if currentSpeed < targetSpeed then
-        currentSpeed = math.min(currentSpeed + accelerationRate * dt, targetSpeed)
-    elseif currentSpeed > targetSpeed then
-        currentSpeed = math.max(currentSpeed - accelerationRate * dt, targetSpeed)
-    end
-
-    humanoid.WalkSpeed = currentSpeed
-end)
-
-
-local AttackSound = Instance.new("Sound", Knife)
-AttackSound.SoundId = "rbxassetid://437475935"
-AttackSound.Volume = 1
-
-local HitSound = Instance.new("Sound", Knife)
-HitSound.SoundId = "rbxassetid://623904185"
-HitSound.Volume = 1
-
---//====================================================\\--
---||                SSCKNIFE FOLLOW SYSTEM             ||--
---\\====================================================//--
-
-local accessory = character:FindFirstChild("Accessory (SSCKnife)")
-if accessory then
-    local accessoryHandle = accessory:FindFirstChild("Handle")
-    if accessoryHandle then
-        accessoryHandle:BreakJoints()
-        accessoryHandle.CanCollide = false
-        accessoryHandle.Massless = true
-        accessoryHandle.Anchored = false
-
-        local realHandlePart
-if handler:IsA("Motor6D") then
-    realHandlePart = handler.Part1
-else
-    realHandlePart = handler
-end
-
-if accessoryHandle and accessoryHandle:IsA("BasePart") and realHandlePart and realHandlePart:IsA("BasePart") then
-    RunService.Heartbeat:Connect(function()
-        accessoryHandle.CFrame = A1.CFrame * CFrame.Angles(0,math.rad(90),0)
-    end)
-else
-    warn("Handle do acessório ou da faca não é BasePart ou não encontrado")
-end
-end
-else
-    warn("SSCKnife não encontrado")
-end
-
---//====================================================\\--
---||                Animator6D Pro V4 (R6)             ||--
---\\====================================================//--
-
-if getgenv().Animator6DLoadedPro then return end
-getgenv().Animator6DLoadedPro = true
-
-local LocalAssetCache = {}
-local fullModel = nil
-pcall(function()
-    fullModel = game:GetObjects("rbxassetid://107495486817639")[1]
-    if fullModel then fullModel.Parent = workspace end
-end)
-
-local function LoadLocalAsset(id)
-    id = tostring(id):gsub("^rbxassetid://", "")
-    if LocalAssetCache[id] then return LocalAssetCache[id] end
-    local found = fullModel and fullModel:FindFirstChild(id, true)
-    if found then LocalAssetCache[id]=found return found end
-    local ok,obj = pcall(function() return game:GetObjects("rbxassetid://"..id)[1] end)
-    if ok and obj then LocalAssetCache[id]=obj return obj end
-    return nil
-end
-
-local R6Map = {
-    ["Head"]="Neck", ["Torso"]="RootJoint", ["Right Arm"]="Right Shoulder",
-    ["Left Arm"]="Left Shoulder", ["Right Leg"]="Right Hip", ["Left Leg"]="Left Hip",
-    ["Handle"]="Handle"
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local v1 = ReplicatedStorage:WaitForChild("ClientModules")
+local v2 = ReplicatedStorage:WaitForChild("Shared")
+require(v1.MainModule)
+require(v2:WaitForChild("MoveUseData")).MinosPrime = {
+    ["Movements"] = {
+        ["Dash"] = 10,
+        ["RunSpeed"] = 50,
+        ["Speed"] = 8,
+        ["Jump"] = 25
+    },
+    ["Dash"] = {
+        ["Cooldown"] = 5
+    },
+    ["RiderKick"] = {
+        ["Stamina"] = 25,
+        ["StaminaDebounce"] = 2,
+        ["Cooldown"] = 10
+    },
+    ["DropAttack"] = {
+        ["Stamina"] = 25,
+        ["StaminaDebounce"] = 2,
+        ["Cooldown"] = 15
+    },
+    ["Combo"] = {
+        ["Stamina"] = 25,
+        ["StaminaDebounce"] = 3,
+        ["Cooldown"] = 30
+    },
+    ["Boxing"] = {
+        ["Stamina"] = 25,
+        ["StaminaDebounce"] = 5,
+        ["Cooldown"] = 20
+    },
+    ["DownSwing"] = {
+        ["Stamina"] = 25,
+        ["StaminaDebounce"] = 1.5,
+        ["Cooldown"] = 15
+    },
+    ["Uppercut"] = {
+        ["Stamina"] = 25,
+        ["StaminaDebounce"] = 2,
+        ["Cooldown"] = 20
+    },
+    ["DropKick"] = {
+        ["Stamina"] = 25,
+        ["StaminaDebounce"] = 2,
+        ["Cooldown"] = 20
+    },
+    ["ProjectilePunch"] = {
+        ["Stamina"] = 25,
+        ["StaminaDebounce"] = 1,
+        ["Cooldown"] = 10
+    }
 }
+]]></ProtectedString><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[utprButtonCreator]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="47"><Properties><int name="DisplayOrder">1000</int><bool name="ResetOnSpawn">false</bool><bool name="AutoLocalize">false</bool><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Cmdr]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="48"><Properties><int name="DisplayOrder">1001</int><token name="ScreenInsets">1</token><bool name="ResetOnSpawn">false</bool><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[TopbarPlus]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Sound" referent="49"><Properties><bool name="Looped">true</bool><bool name="Playing">true</bool><Content name="SoundId"><url><![CDATA[rbxassetid://117640080472501]]></url></Content><double name="TimePosition">78.795</double><float name="Volume">0</float><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="50"><Properties><int name="DisplayOrder">1001</int><token name="ScreenInsets">1</token><bool name="Enabled">false</bool><bool name="ResetOnSpawn">false</bool><token name="ZIndexBehavior">1</token><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[RobloxGui]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="51"><Properties><int name="DisplayOrder">1000</int><bool name="Enabled">false</bool><bool name="ResetOnSpawn">false</bool><token name="ZIndexBehavior">1</token><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Passes]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="52"><Properties><token name="ScreenInsets">1</token><bool name="Enabled">false</bool><bool name="ResetOnSpawn">false</bool><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="53"><Properties><int name="DisplayOrder">1000</int><token name="ScreenInsets">1</token><bool name="ResetOnSpawn">false</bool><token name="ZIndexBehavior">1</token><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Info]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="54"><Properties><int name="DisplayOrder">2</int><bool name="Enabled">false</bool><bool name="ResetOnSpawn">false</bool><token name="ZIndexBehavior">1</token><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[NotificationScreen]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="55"><Properties><int name="DisplayOrder">1000</int><bool name="ResetOnSpawn">false</bool><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Notifications]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="56"><Properties><token name="ZIndexBehavior">1</token><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[GoldMenu]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="57"><Properties><int name="DisplayOrder">999999999</int><token name="ScreenInsets">1</token><bool name="Enabled">false</bool><bool name="ResetOnSpawn">false</bool><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[FoxyJumpscare]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="58"><Properties><int name="DisplayOrder">1000</int><bool name="ResetOnSpawn">false</bool><bool name="AutoLocalize">false</bool><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[Cmdr]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="59"><Properties><bool name="ClipToDeviceSafeArea">false</bool><int name="DisplayOrder">1</int><bool name="Enabled">false</bool><bool name="ResetOnSpawn">false</bool><token name="ZIndexBehavior">1</token><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[TouchGui]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="60"><Properties><int name="DisplayOrder">999</int><token name="ScreenInsets">1</token><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[ContextUI]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="ScreenGui" referent="61"><Properties><token name="ScreenInsets">1</token><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[UI]]></string><BinaryString name="Tags"></BinaryString></Properties></Item></Item><Item class="StarterGear" referent="62"><Properties><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Folder" referent="63"><Properties><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[leaderstats]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Folder" referent="64"><Properties><BinaryString name="AttributesSerialize">KgAAAA4AAABBZGFwdGl2ZVRoZW1lcwMBEQAAAEFzcmllbEtpbGxlZEZyaXNrBgAAAAAAAPA/CwAAAEFzcmllbEtpbGxzBgAAAAAAAPA/DgAAAEF0b21pY05ld0tpbGxzBgAAAAAAAABAFAAAAENhbWVyYVNoYWtlSW50ZW5zaXR5BgAAAAAAAPA/BwAAAENvdW50cnkCAgAAAEJSEAAAAEN1cnJlbnRDaGFyYWN0ZXICBwAAAFNTQ2hhcmEOAAAAQ3VycmVudENvdW50cnkCAgAAAEJSBgAAAERhdGFJRAYAAAAAAABZQAMAAABEYXkGAACADTVn2kEIAAAARGF5S2lsbHMGAAAAAAAAAAALAAAARGlzcGxheU5hbWUCCwAAAGluZGV4RmFpbGVkEAAAAERpc3BsYXlZb3VyU3RhdHMDARkAAABFeHByZXNzaXZlU1NDaGFyYU5ld0tpbGxzBgAAAAAAAABACwAAAEZpcnN0UGxheWVkAhIAAAAxMC8yNy8yNSwgMTM6MzI6MTUOAAAARmlyc3RQbGF5ZWRJbnQGAADAF90/2kELAAAARnJpc2tLaWxsZWQGAAAAAAAA8D8KAAAAR2FzdGVyQW5pbQMBBAAAAEdvbGQGAAAAAAAAAAAPAAAASGVhckVuZW15VGhlbWVzAwENAAAASGlnaGVzdFN0cmVhawYAAAAAAADwPw4AAABLbmlnaHROZXdLaWxscwYAAAAAAAAAQAgAAABMYXN0S2lsbAYAAEB7DEDaQQkAAABMYXN0UGxhY2UGAADw0Nvo+0EKAAAATGFzdFBsYXllZAYAAECyZ2faQQgAAABMYXN0V2VlawYAAAAAAOKmQAcAAABMbWJUeXBlAgMAAABUYXAKAAAATG9ja09uVHlwZQYAAAAAAADwPwwAAABNb250aGx5S2lsbHMGAAAAAAAA8D8MAAAATW92ZVF1ZXVlaW5nAwAKAAAATmV4dFVwZGF0ZQYAAEBAu2jaQQYAAABPbmxpbmUCJAAAADA2MjNlODc4LWM4MDItNDM0ZC04OGEwLWUxMjgxMGY1OWNjNQoAAABQbGF5VGhlbWVzAwEMAAAAUXVldWVUaW1lb3V0BgAAAAAAAABAEwAAAFJvYmxveFN0YXR1c1RyYWNrZXIDAAkAAABTYW5zQmxhc3QGAAAAAAAAAEALAAAAU2tpbkpldmlsSlADAQkAAABTa2luU3VzaWUDAQkAAABUaW1lU3BlbnQGAAAAAIDQzkAHAAAAVUlTdHlsZQYAAAAAAAAAQAoAAABVcGRhdGVMb2dzBgAAAAAAADpACQAAAFdlZWtLaWxscwYAAAAAAAAAAA==</BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[PlayerData]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Folder" referent="65"><Properties><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><string name="Name"><![CDATA[ChatTags]]></string><BinaryString name="Tags"></BinaryString></Properties></Item><Item class="Backpack" referent="66"><Properties><BinaryString name="AttributesSerialize"></BinaryString><bool name="DefinesCapabilities">false</bool><BinaryString name="Tags"></BinaryString></Properties></Item></Item></Item><Item class="Script" referent="67"><Properties><string name="Name"><![CDATA[README]]></string><ProtectedString name="Source"><![CDATA[--[[
+		Thank you for using UniversalSynSaveInstance (Join to Copy Games) https://discord.gg/wx4ThpAsmw.
 
--- Animator6D Functions
-local function ConvertToTable(kfs)
-    if not (kfs and typeof(kfs)=="Instance" and kfs:IsA("KeyframeSequence")) then
-        for _, obj in ipairs(kfs:GetDescendants()) do
-            if obj:IsA("KeyframeSequence") then kfs=obj break end
-        end
-    end
-    local seq={}
-    for _, frame in ipairs(kfs:GetKeyframes()) do
-        local entry={Time=frame.Time, Data={}}
-        for _, pose in ipairs(frame:GetDescendants()) do
-            if pose:IsA("Pose") and pose.Weight>0 then
-                entry.Data[pose.Name]={CFrame=pose.CFrame}
-            end
-        end
-        table.insert(seq, entry)
-    end
-    table.sort(seq,function(a,b) return a.Time<b.Time end)
-    return seq, kfs.Loop
-end
+		If you didn't save in Binary (rbxl) - it's recommended to save the game right away to take advantage of the binary format & to preserve values of certain properties if you used IgnoreDefaultProperties setting (as they might change in the future).
+		You can do that by going to FILE -> Save to File As -> Make sure File Name ends with .rbxl -> Save
 
-local function BuildMotorMap(rig)
-    local map, lower = {}, {}
-    for _, m in ipairs(rig:GetDescendants()) do
-        if m:IsA("Motor6D") then
-            map[m.Name]=m
-            lower[string.lower(m.Name)]=m
-        end
-    end
-    return map, lower
-end
+		ServerStorage, ServerScriptService and Server Scripts are IMPOSSIBLE to save because of FilteringEnabled.
 
-local function FindMotor(name,map,lower)
-    local match = R6Map[name] or name
-    return map[match] or lower[string.lower(match)]
-end
+		If your player cannot spawn into the game, please move the scripts in StarterPlayer somewhere else or delete them. Then run `game:GetService("Players").CharacterAutoLoads = true`.
+		And use "Play Here" to start game instead of "Play" to spawn your Character where your Camera currently is.
 
-local AnimPlayer={}
-AnimPlayer.__index=AnimPlayer
-function AnimPlayer.new(rig,kfs)
-    local self=setmetatable({},AnimPlayer)
-    self.rig=rig
-    self.seq,self.looped=ConvertToTable(kfs)
-    self.map,self.lower=BuildMotorMap(rig)
-    self.time=0
-    self.playing=false
-    self.length=self.seq[#self.seq].Time
-    self.speed=1
-    self.savedC0={}
-    for _,m in pairs(self.map) do self.savedC0[m]=m.C0 end
-    return self
-end
+		If the chat system does not work, please use the explorer and delete everything inside the TextChatService/Chat service(s). 
+		Or run `game:GetService("Chat"):ClearAllChildren() game:GetService("TextChatService"):ClearAllChildren()`
+				
+		If Union and MeshPart collisions don't work, run the script below in the Studio Command Bar:
+				
+				
+		local C = game:GetService("CoreGui")
+		local D = Enum.CollisionFidelity.Default
+				
+		for _, v in game:GetDescendants() do
+			if v:IsA("TriangleMeshPart") and not v:IsDescendantOf(C) then
+				v.CollisionFidelity = D
+			end
+		end
+		print("Done")
+				
+		If you can't move the Camera, run this script in the Studio Command Bar:
+			
+		workspace.CurrentCamera.CameraType = Enum.CameraType.Fixed
+		
+		Or Destroy the Camera.
 
--- Suavização apenas na transição
-function AnimPlayer:Play(speed, loop, transitionTime)
-    transitionTime = transitionTime or 0.15
-    local previousC0s = {}
-    for motor,_ in pairs(self.map) do previousC0s[motor] = motor.C0 end
+		This file was generated with the following settings:
+		{"SaveBytecode":false,"Callback":false,"ShowStatus":true,"IgnoreDefaultPlayerScripts":true,"NilInstancesFixes":{"BaseWrap":null,"Animator":null,"Attachment":null,"PackageLink":null,"AdPortal":null},"IgnoreList":["CoreGui","CorePackages"],"__DEBUG_MODE":false,"DecompileJobless":false,"IgnoreNotArchivable":true,"RemovePlayerCharacters":true,"Object":null,"DecompileIgnore":["TextChatService",null,null,null,null,null,null,null],"IgnoreSpecialProperties":true,"TreatUnionsAsParts":false,"IsModel":false,"NilInstances":false,"ExtraInstances":[],"noscripts":false,"ReadMe":true,"OptionsAliases":{"SavePlayers":"IsolatePlayers","IgnoreArchivable":"IgnoreNotArchivable","DecompileTimeout":"timeout","SaveNonCreatable":"SaveNotCreatable","InstancesBlacklist":"IgnoreList","IsolatePlayerGui":"IsolateLocalPlayer","FileName":"FilePath","IgnoreDefaultProps":"IgnoreDefaultProperties"},"scriptcache":true,"SharedStringOverwrite":false,"AlternativeWritefile":true,"mode":"optimized","SaveCacheInterval":56320,"IgnoreSharedStrings":true,"IsolatePlayers":true,"NotCreatableFixes":["","AdvancedDragger","AnimationTrack","Dragger","Player","PlayerGui","PlayerMouse","PlayerMouse","PlayerScripts","ScreenshotHud","StudioData","TextChatMessage","TextSource","TouchTransmitter","Translator"],"timeout":99999999999999,"IgnoreDefaultProperties":true,"Anonymous":false,"IsolateStarterPlayer":false,"IsolateLocalPlayerCharacter":false,"IgnorePropertiesOfNotScriptsOnScriptsMode":false,"AvoidFileOverwrite":true,"SaveNotCreatable":false,"IsolateLocalPlayer":false,"FilePath":false,"AntiIdle":true,"ShutdownWhenDone":false,"SafeMode":true,"IgnoreProperties":[]}
 
-    self.playing = true
-    self.speed = speed or 1
-    self.looped = (loop==nil) and true or loop
-    self.time = 0
-
-    if self.conn then self.conn:Disconnect() end
-    local transitioning = true
-    local t = 0
-
-    self.conn = RunService.Heartbeat:Connect(function(dt)
-        self.time += dt*self.speed
-        if self.time > self.length then
-            if self.looped then self.time -= self.length else self:Stop(true) return end
-        end
-
-        local prev=self.seq[1]
-        for i=1,#self.seq do
-            if self.seq[i].Time<=self.time then prev=self.seq[i] else break end
-        end
-
-        for joint,data in pairs(prev.Data) do
-            local motor = FindMotor(joint,self.map,self.lower)
-            if motor then
-                local targetC0 = self.savedC0[motor]*data.CFrame
-                if transitioning then
-                    motor.C0 = motor.C0:Lerp(targetC0, math.clamp(dt/transitionTime,0,1))
-                else
-                    motor.C0 = targetC0
-                end
-            end
-        end
-
-        if transitioning then
-            t += dt
-            if t >= transitionTime then transitioning = false end
-        end
-    end)
-end
-
-function AnimPlayer:Stop(restore)
-    self.playing=false
-    if self.conn then self.conn:Disconnect() end
-    if restore then
-        for m,c0 in pairs(self.savedC0) do m.C0=c0 end
-    end
-end
-
-local function disableDefaultAnimations(char)
-    for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do track:Stop() end
-    local animScript = char:FindFirstChild("Animate")
-    if animScript then animScript.Disabled=true end
-end
-
-getgenv().Animator6D=function(idOrInstance,speed,loop)
-    local kfs
-    if typeof(idOrInstance)=="Instance" then kfs=idOrInstance
-    else
-        local asset=LoadLocalAsset(idOrInstance)
-        if asset then kfs=asset:FindFirstChildOfClass("KeyframeSequence") or asset end
-    end
-    if not kfs then return end
-    disableDefaultAnimations(character)
-    if getgenv().currentAnimator6D then getgenv().currentAnimator6D:Stop(true) end
-    local anim=AnimPlayer.new(character,kfs)
-    getgenv().currentAnimator6D=anim
-    anim:Play(speed or 1,loop)
-    return anim
-end
-
-getgenv().Animator6DStop=function()
-    if getgenv().currentAnimator6D then
-        getgenv().currentAnimator6D:Stop(true)
-        getgenv().currentAnimator6D=nil
-    end
-end
-
-warn("[Animator6D Pro V4] Loaded")
-
---//====================================================\\--
---||                CARREGAR ANIMAÇÕES                ||--
---\\====================================================//--
-
-local FolderName="Chara"
-local function LoadKeyframeSequence(fileName)
-    local path = FolderName.."/"..fileName
-    if not isfile(path) then warn("Arquivo não encontrado:",path) return nil end
-    local raw = readfile(path)
-    local data = HttpService:JSONDecode(raw)
-    local sequence = Instance.new("KeyframeSequence")
-    for _, frame in ipairs(data) do
-        local keyframe = Instance.new("Keyframe")
-        keyframe.Time = frame.Time
-        keyframe.Parent = sequence
-        for _, poseData in ipairs(frame.Poses) do
-            local pose = Instance.new("Pose")
-            pose.Name = poseData.Name
-            pose.CFrame = CFrame.new(unpack(poseData.CFrame))
-            pose.Parent = keyframe
-        end
-    end
-    return sequence
-end
-
-local IdleAnim=LoadKeyframeSequence("idle.txt")
-local WalkAnim=LoadKeyframeSequence("walk.txt")
-local RunAnim=LoadKeyframeSequence("run.txt")
-local JumpAnim=LoadKeyframeSequence("jump.txt")
-local FallAnim=LoadKeyframeSequence("fall.txt")
-local ComboAnims={
-    LoadKeyframeSequence("KL1.txt"),
-    LoadKeyframeSequence("KL2.txt"),
-    LoadKeyframeSequence("KL3.txt"),
-    LoadKeyframeSequence("KL4.txt"),
-    LoadKeyframeSequence("KL5.txt")
-}
-
---//====================================================\\--
---||                MOVIMENTO + COMBO                 ||--
---\\====================================================//--
-
-
-local currentAnim=nil
-local comboPlaying=false
-local comboIndex=1
-local comboQueued=false
-local lastAnimData = nil
-local transitionTimeGlobal = 0.15
-
-local function PlayAnimation(anim,speed,loop)
-    if currentAnim==anim then return end
-    currentAnim=anim
-    getgenv().Animator6D(anim,speed or 1,loop~=false,transitionTimeGlobal)
-end
-
-local function GetAnimationLength(anim)
-    local length=0
-    for _,keyframe in ipairs(anim:GetChildren()) do
-        if keyframe:IsA("Keyframe") and keyframe.Time>length then length=keyframe.Time end
-    end
-    return length
-end
-
--- Atualização de estado humanoid com transição suave
-RunService.Heartbeat:Connect(function(dt)
-    if comboPlaying then return end
-
-    local state = humanoid:GetState()
-    local speed = humanoid.MoveDirection.Magnitude
-    local nextAnim = IdleAnim
-
-    if state==Enum.HumanoidStateType.Jumping then
-        nextAnim = JumpAnim
-    elseif state==Enum.HumanoidStateType.Freefall then
-        nextAnim = FallAnim
-    else
-        if speed < 0.1 then
-            nextAnim = IdleAnim
-        else
-            nextAnim = running and RunAnim or WalkAnim
-        end
-    end
-
-    if currentAnim ~= nextAnim then
-        -- interpolação suave de transição
-        if lastAnimData and getgenv().currentAnimator6D then
-            for joint, data in pairs(lastAnimData) do
-                local motor = FindMotor(joint, getgenv().currentAnimator6D.map, getgenv().currentAnimator6D.lower)
-                if motor then
-                    motor.C0 = motor.C0:Lerp(data, math.clamp(dt/transitionTimeGlobal, 0, 1))
-                end
-            end
-        end
-        PlayAnimation(nextAnim,1,true)
-    end
-
-    -- salvar frame atual para próxima transição
-    if getgenv().currentAnimator6D and getgenv().currentAnimator6D.seq then
-        local frame = getgenv().currentAnimator6D.seq[1].Data
-        lastAnimData = {}
-        for joint, data in pairs(frame) do
-            local motor = FindMotor(joint, getgenv().currentAnimator6D.map, getgenv().currentAnimator6D.lower)
-            if motor then
-                lastAnimData[joint] = getgenv().currentAnimator6D.savedC0[motor]*data.CFrame
-            end
-        end
-    end
-end)
-
--- GUI
-local ScreenGui=Instance.new("ScreenGui",player.PlayerGui)
-local RunButton=Instance.new("TextButton")
-RunButton.Size=UDim2.new(0,150,0,50)
-RunButton.Position=UDim2.new(0.8,0,0.7,0)
-RunButton.Text="RUN OFF"
-RunButton.Parent=ScreenGui
-RunButton.MouseButton1Click:Connect(function()
-    running = not running
-    RunButton.Text = running and "RUN ON" or "RUN OFF"
-end)
-
-local HitButton=Instance.new("TextButton")
-HitButton.Size=UDim2.new(0,150,0,50)
-HitButton.Position=UDim2.new(0.8,0,0.55,0)
-HitButton.Text="HIT"
-HitButton.Parent=ScreenGui
-
--- Função de combo
-local function PlayCombo()
-    if comboPlaying then comboQueued=true return end
-    comboPlaying=true
-    comboQueued=false
-
-    local anim=ComboAnims[comboIndex]
-
-    Trail.Enabled=true
-    local originalWalkSpeed=humanoid.WalkSpeed
-    humanoid.WalkSpeed=0
-    humanoid.AutoRotate=false
-
-    AttackSound:Play()
-
-    local RootPart=character:WaitForChild("HumanoidRootPart")
-    local bodyPos=Instance.new("BodyPosition")
-    bodyPos.MaxForce=Vector3.new(100000,0,100000)
-    bodyPos.D=500
-    bodyPos.P=1000
-    bodyPos.Position=RootPart.Position + RootPart.CFrame.LookVector*5
-    bodyPos.Parent=RootPart
-
-    local bpConnection=RunService.Heartbeat:Connect(function()
-        if bodyPos and bodyPos.Parent then
-            bodyPos.Position=RootPart.Position + RootPart.CFrame.LookVector*5
-        end
-    end)
-
-    local hitCooldowns={}
-    local function onHit(otherPart)
-        if not comboPlaying then return end
-        local hum=otherPart.Parent:FindFirstChild("Humanoid")
-        if hum and hum.Parent~=character then
-            local id=hum:GetDebugId()
-            local now=tick()
-            if not hitCooldowns[id] or now-hitCooldowns[id]>0.45 then
-                HitSound:Play()
-                hitCooldowns[id]=now
-            end
-        end
-    end
-
-    -- garante que estamos pegando a parte real, não um Motor6D
-local realHandlePart
-if handler:IsA("Motor6D") then
-    realHandlePart = handler.Part1
-else
-    realHandlePart = handler
-end
-
--- garante que estamos pegando a parte real do handle da faca
-local realHandlePart
-if handler and handler:IsA("Motor6D") and handler.Part1 then
-    realHandlePart = handler.Part1
-elseif handler and handler:IsA("BasePart") then
-    realHandlePart = handler
-else
-    warn("Handle da faca não encontrado ou inválido")
-end
-
--- conecta Touched apenas se for BasePart
-local handleConn
-if realHandlePart and realHandlePart:IsA("BasePart") then
-    handleConn = realHandlePart.Touched:Connect(onHit)
-end
-
-
-    PlayAnimation(anim,0.5,false,0.15)
-    task.wait(GetAnimationLength(anim)/0.5*0.85)
-
-    comboIndex+=1
-    if comboIndex>#ComboAnims then comboIndex=1 task.wait(0.13) end
-
-    comboPlaying=false
-    Trail.Enabled=false
-
-    if bpConnection then bpConnection:Disconnect() end
-    if bodyPos then bodyPos:Destroy() end
-    if hitConn then hitConn:Disconnect() end
-    if handleConn then handleConn:Disconnect() end
-
- 
-    humanoid.AutoRotate=true
-    PlayAnimation(IdleAnim,1,true)
-
-    if comboQueued then
-        comboQueued=false
-        PlayCombo()
-    end
-end
-
-HitButton.MouseButton1Click:Connect(PlayCombo)
-PlayAnimation(IdleAnim,1,true)
+		Elapsed time: 1.6844561139996586 Date (UTC): 24 February 2026 12:52:56 PlaceId: 7491927311 PlaceVersion: 16629 Client Version: 2.708.880 Executor: Delta 1.1.708.880 arm64
+]]]]></ProtectedString></Properties></Item></roblox><!-- Saved by UniversalSynSaveInstance (Join to Copy Games) https://discord.gg/wx4ThpAsmw -->
