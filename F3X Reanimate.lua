@@ -13,7 +13,7 @@ local rigType = humanoid.RigType
 local realAnimate = realChar:FindFirstChild("Animate")
 if realAnimate then realAnimate.Enabled = false end
 
-local ServerEndpoint = LocalPlayer.Backpack:WaitForChild("Building Tools")
+local ServerEndpoint = LocalPlayer.Backpack:WaitForChild("Building Tools") or LocalPlayer.Character:WaitForChild("Building Tools")
 :WaitForChild("SyncAPI")
 :WaitForChild("ServerEndpoint")
 
