@@ -384,6 +384,10 @@ local currentAnim=nil
 local comboPlaying=false
 local comboIndex=1
 local comboQueued=false
+local jumpStartTime = 0
+local fallDelay = 0
+
+
 local lastAnimData = nil
 local transitionTimeGlobal = 0.15
 
@@ -405,14 +409,23 @@ end
 RunService.Heartbeat:Connect(function(dt)
     if comboPlaying then return end
 
-    local state = humanoid:GetState()
     local speed = humanoid.MoveDirection.Magnitude
+    local state = humanoid:GetState()
     local nextAnim = IdleAnim
 
-    if state==Enum.HumanoidStateType.Jumping then
+    -- Disparador do pulo
+    if humanoid.Jump then
+        jumpStartTime = tick()
+    end
+
+    -- Jump fica ativo por 0.13s
+    if (tick() - jumpStartTime) <= 0.2 then
         nextAnim = JumpAnim
-    elseif state==Enum.HumanoidStateType.Freefall then
+
+    -- Depois disso, se estiver no ar, vira Fall
+    elseif state == Enum.HumanoidStateType.Freefall then
         nextAnim = FallAnim
+
     else
         if speed < 0.1 then
             nextAnim = IdleAnim
@@ -420,6 +433,11 @@ RunService.Heartbeat:Connect(function(dt)
             nextAnim = running and RunAnim or WalkAnim
         end
     end
+
+    if currentAnim ~= nextAnim then
+        PlayAnimation(nextAnim,1,true)
+    end
+
 
     if currentAnim ~= nextAnim then
         -- interpolação suave de transição
