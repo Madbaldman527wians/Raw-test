@@ -23,7 +23,7 @@ for _, file in ipairs(arquivos) do
 
     if not isfile(path) then
         local url = base .. file
-        print("Downloading🤑:", url)
+        print("Downloading assets:", url)
 
         local success, data = pcall(function()
             return game:HttpGet(url)
@@ -597,7 +597,7 @@ end
 -- conecta Touched apenas se for BasePart
 local handleConn
 if realHandlePart and realHandlePart:IsA("BasePart") then
-    handleConn = realHandlePart.Touched:Connect(onHit)
+    handleConn = accessory.Handle.Touched:Connect(onHit)
 end
 
 
