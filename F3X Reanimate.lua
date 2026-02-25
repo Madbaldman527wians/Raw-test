@@ -55,7 +55,7 @@ Torso = "rbxassetid://489667862",
 ["Left Arm"] = "rbxassetid://488154609",
 ["Right Arm"] = "rbxassetid://488154609",
 ["Left Leg"] = "rbxassetid://488154609",
-["Right Leg"] = "rbxassetid://488154609",
+["Right Leg"] = "rbxassetid://488155216",
 
 }
 
