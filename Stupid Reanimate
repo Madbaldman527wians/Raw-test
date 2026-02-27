@@ -1,4 +1,4 @@
-Workspace.FallenPartsDestroyHeight = 0/0
+
 
 local Plrs = game.Players  
 local lp = Plrs.LocalPlayer  
@@ -127,3 +127,5 @@ Con2 = RunService.Heartbeat:Connect(function()
     end
   
 end)
+
+Workspace.FallenPartsDestroyHeight = 0/0
