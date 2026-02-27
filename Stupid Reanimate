@@ -1,3 +1,5 @@
+Workspace.FallenPartsDestroyHeight = 0/0
+
 local Plrs = game.Players  
 local lp = Plrs.LocalPlayer  
   
