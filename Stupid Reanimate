@@ -26,7 +26,7 @@ FChar:WaitForChild("Humanoid")
 FChar:WaitForChild("Animate").Enabled = true  
   
 workspace.Camera.CameraSubject = FChar.Humanoid  
-  
+  workspace.FallenPartsDestroyHeight = 0/0
 OfcH.Animator:Destroy()  
   
 for _, v in ipairs(FChar:GetDescendants()) do  
@@ -128,4 +128,4 @@ Con2 = RunService.Heartbeat:Connect(function()
   
 end)
 
-Workspace.FallenPartsDestroyHeight = 0/0
+
