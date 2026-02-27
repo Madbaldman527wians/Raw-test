@@ -26,7 +26,7 @@ FChar:WaitForChild("Humanoid")
 FChar:WaitForChild("Animate").Enabled = true  
   
 workspace.Camera.CameraSubject = FChar.Humanoid  
-  workspace.FallenPartsDestroyHeight = 0/0
+
 OfcH.Animator:Destroy()  
   
 for _, v in ipairs(FChar:GetDescendants()) do  
