@@ -10,6 +10,8 @@ Animate.Enabled = false
   
 OfcChar.Archivable = true  
 local FChar = OfcChar:Clone()  
+lp.SimulationRadius = 999
+lp.MaximumSimulationRadius = 999
 replicatesignal(OfcH.ServerBreakJoints)  
 
 for _, v in ipairs(OfcChar:GetDescendants()) do  
