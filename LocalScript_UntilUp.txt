@@ -1,0 +1,10 @@
+local char = script.Parent
+local humanoid = char:FindFirstChildWhichIsA("Humanoid")
+if humanoid.FloorMaterial == Enum.Material.Air or humanoid:GetState() == Enum.HumanoidStateType.Climbing then
+	script.RemoteEvent:FireServer()
+	return
+end
+
+repeat task.wait() until humanoid.FloorMaterial == Enum.Material.Air or humanoid:GetState() == Enum.HumanoidStateType.Climbing
+
+script.RemoteEvent:FireServer()

@@ -1,0 +1,11 @@
+local hitbox = script:WaitForChild("Value").Value
+local Character = script:WaitForChild("ignore").Value
+local hitted = {}
+for i,v in pairs(workspace:GetPartsInPart(hitbox)) do
+	if v and v.Parent and v.Parent:FindFirstChildWhichIsA("Humanoid") and v.Parent:FindFirstChild("HumanoidRootPart") and v.Parent ~= Character and not table.find(hitted, v.Parent) then
+		table.insert(hitted, v.Parent)
+		script.RemoteEvent:FireServer(v.Parent)
+	end
+end
+
+script.RemoteEvent:FireServer(nil)

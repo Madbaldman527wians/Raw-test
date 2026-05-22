@@ -1,0 +1,117 @@
+local RunService = game:GetService("RunService")
+local direction = script:WaitForChild("Direction").Value
+local bodyVelocity = script:WaitForChild("BodyVelocity").Value
+local character = script:WaitForChild("Character").Value
+local Hrp = character:FindFirstChild("HumanoidRootPart")
+local useCamera = script:WaitForChild("UseCamera").Value
+local Speed = script.Count.Value
+local ignore = {}
+local function reset()
+	for i,v in pairs(workspace:GetChildren()) do
+		if v:IsA("Model") and v:FindFirstChildWhichIsA("Humanoid") and not table.find(ignore, v) then
+			table.insert(ignore, v)
+		end
+	end
+end
+local Fired = false
+reset()
+spawn(function()
+	while true do
+		task.wait(0.5)
+		reset()
+	end
+end)
+local function wallcheck()
+	local p = RaycastParams.new()
+	p.FilterType = Enum.RaycastFilterType.Exclude
+	p.FilterDescendantsInstances = ignore
+	local ray = workspace:Raycast(Hrp.Position, Hrp.CFrame.LookVector.Unit * 6.5, p)
+	if ray and ray.Instance and ray.Instance.CanCollide ~= false then
+		return true, ray.Position, ray.Normal
+	else
+		return false
+	end
+end
+if script.Up.Value > 0 then
+	bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+	task.delay(0.2, function()
+		bodyVelocity.MaxForce = Vector3.new(math.huge, 0, math.huge)
+	end)
+end
+local Run = RunService.RenderStepped:Connect(function()
+	if direction ~= nil then
+		if direction == "Left" then
+			if wallcheck() then
+				bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+				return
+			end
+			if useCamera then
+				local CamVector = workspace.CurrentCamera.CFrame.LookVector
+				local Pos = Hrp.Position
+				Hrp.CFrame = CFrame.new(Pos,Pos+Vector3.new(CamVector.X,0,CamVector.Z))
+				bodyVelocity.Velocity = CFrame.new(Pos,Pos + Vector3.new(CamVector.X,0,CamVector.Z)).RightVector*-Speed.Value
+			else
+				bodyVelocity.Velocity = Hrp.CFrame.RightVector * -Speed.Value
+			end
+		elseif direction == "Right" then
+			if wallcheck() then
+				bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+				return
+			end
+			if useCamera then
+				local CamVector = workspace.CurrentCamera.CFrame.LookVector
+				local Pos = Hrp.Position
+				Hrp.CFrame = CFrame.new(Pos,Pos+Vector3.new(CamVector.X,0,CamVector.Z))
+				bodyVelocity.Velocity = CFrame.new(Pos,Pos + Vector3.new(CamVector.X,0,CamVector.Z)).RightVector*Speed.Value
+			else
+				bodyVelocity.Velocity = Hrp.CFrame.RightVector * Speed.Value
+			end
+		elseif direction == "Back" then
+			if wallcheck() then
+				bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+				return
+			end
+			if useCamera then
+				local CamVector = workspace.CurrentCamera.CFrame.LookVector
+				local Pos = Hrp.Position
+				Hrp.CFrame = CFrame.new(Pos,Pos+Vector3.new(CamVector.X,0,CamVector.Z))
+				bodyVelocity.Velocity = CFrame.new(Pos,Pos + Vector3.new(CamVector.X,0,CamVector.Z)).LookVector*-Speed.Value
+			else
+				bodyVelocity.Velocity = Hrp.CFrame.LookVector * -Speed.Value + Vector3.new(0, script.Up.Value, 0)
+			end
+		elseif direction == "Front" then
+			local variable, pos, normal = wallcheck()
+			if variable then
+				bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+				if not Fired then
+					Fired = true
+					script.Remote.Value:FireServer(pos, normal)
+				end
+				return
+			end
+			if useCamera then
+				local CamVector = workspace.CurrentCamera.CFrame.LookVector
+				local Pos = Hrp.Position
+				Hrp.CFrame = CFrame.new(Pos,Pos+Vector3.new(CamVector.X,0,CamVector.Z))
+				bodyVelocity.Velocity = CFrame.new(Pos,Pos + Vector3.new(CamVector.X,0,CamVector.Z)).LookVector*Speed.Value
+			else
+				bodyVelocity.Velocity = Hrp.CFrame.LookVector * Speed.Value + Vector3.new(0, script.Up.Value, 0)
+			end
+		end
+	else
+		if useCamera then
+			local CamVector = workspace.CurrentCamera.CFrame.LookVector
+			local Pos = Hrp.Position
+			Hrp.CFrame = CFrame.new(Pos,Pos+Vector3.new(CamVector.X,0,CamVector.Z))
+			bodyVelocity.Velocity = CFrame.new(Pos,Pos + Vector3.new(CamVector.X,0,CamVector.Z)).LookVector*Speed.Value
+		else
+			bodyVelocity.Velocity = Hrp.CFrame.LookVector * Speed.Value
+		end
+	end
+end)
+
+script.Disconnected.Changed:Connect(function(value)
+	if script.Disconnected.Value == true then
+		Run:Disconnect()
+	end
+end)
