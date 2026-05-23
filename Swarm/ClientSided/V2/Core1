@@ -1,0 +1,194 @@
+-- =============================================================================
+-- MOTOR LOCUST V2 - CORE 1: CORE DO CLIENTE INTEGRAL (TODOS OS LOCAL_SCRIPTS)
+-- =============================================================================
+shared.LocustCore = shared.LocustCore or {}
+local core = shared.LocustCore
+
+-- Serviços Nativos do Roblox
+local Plrs = game:GetService("Players")
+local RS = game:GetService("RunService")
+local TS = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+local DB = game:GetService("Debris")
+
+local LP = Plrs.LocalPlayer
+local Mouse = LP:GetMouse()
+local Cam = workspace.CurrentCamera
+
+-- =============================================================================
+-- 1. SUBSITUIÇÃO E INSTANCIAÇÃO DO MODELO (getcustomasset)
+-- =============================================================================
+local oldChar = LP.Character or LP.CharacterAdded:Wait()
+local startCF = oldChar:WaitForChild("HumanoidRootPart").CFrame
+
+local _, customObjects = pcall(function() 
+	return game:GetObjects(getcustomasset("locust.rbxmx")) 
+end)
+
+if not customObjects or not customObjects[1] then
+	error("-> [ERRO] Falha crítica ao ler o modelo 'locust.rbxmx'.")
+end
+
+local C = customObjects[1]
+C:SetPrimaryPartCFrame(startCF)
+C.Parent = workspace
+LP.Character = C
+
+local Hum = C:FindFirstChildWhichIsA("Humanoid")
+local HRP = C:FindFirstChild("HumanoidRootPart")
+local Head = C:FindFirstChild("Head")
+oldChar:Destroy()
+
+-- Publica as instâncias físicas reais para o Core 2 ler
+core.Character = C
+core.Humanoid = Hum
+core.HRP = HRP
+core.Head = Head
+core.Mouse = Mouse
+core.Camera = Cam
+
+-- Guardando estados físicos originais (Mecânica de Reset do Unsit)
+core.INITIAL_HIPHEIGHT = Hum.HipHeight
+core.INITIAL_PART_STATES = {}
+for _, d in ipairs(C:GetDescendants()) do 
+	if d:IsA("BasePart") then 
+		d.Anchored = false 
+		if d:IsA("MeshPart") then d.Transparency = 0 end
+		core.INITIAL_PART_STATES[d] = { CanCollide = d.CanCollide, Massless = d.Massless }
+	end 
+end
+
+Hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+Hum:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
+Hum:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
+
+-- =============================================================================
+-- 2. LÓGICA DO LocalScript_Follow.lua (Rotação Suave Baseada no Mouse)
+-- =============================================================================
+local canFollow = true
+core.SetFollowState = function(state) canFollow = state end
+
+RS.RenderStepped:Connect(function()
+	if HRP and Hum and canFollow then
+		-- Só aplica o "olhar para o mouse" se o personagem estiver ativo
+		if Hum.Health > 0 and Mouse.Hit then
+			local targetPos = Mouse.Hit.p
+			local angle = math.atan2(targetPos.X - HRP.Position.X, targetPos.Z - HRP.Position.Z)
+			-- Suaviza a rotação horizontal para encarar o Mouse
+			HRP.CFrame = TS:Create(HRP, TweenInfo.new(0.1, Enum.EasingStyle.Linear), {
+				CFrame = CFrame.new(HRP.Position) * CFrame.Angles(0, angle + math.pi, 0)
+			}):Play() or CFrame.new(HRP.Position) * CFrame.Angles(0, angle + math.pi, 0)
+		end
+	end
+end)
+
+-- =============================================================================
+-- 3. LÓGICA DO LocalScript_CameraOffset.lua (Balanço Dinâmico do Esqueleto)
+-- =============================================================================
+RS:BindToRenderStep("LocustCameraOffset", Enum.RenderPriority.Camera.Value - 1, function()
+	if C and Hum and HRP and Head then
+		-- Mapeia a cabeça local do Locust em relação à RootPart em tempo real
+		local targetOffset = (HRP.CFrame + Vector3.new(0, 1.5, 0)):PointToObjectSpace(Head.CFrame.Position)
+		TS:Create(Hum, TweenInfo.new(0.3, Enum.EasingStyle.Linear), {CameraOffset = targetOffset}):Play()
+	end
+end)
+
+-- =============================================================================
+-- 4. LÓGICA DO HitBoxCallback.lua (Efeito Real de Camera Shake por Impacto)
+-- =============================================================================
+core.TriggerCameraShake = function(intensity, duration)
+	intensity = intensity or 2
+	duration = duration or 0.4
+	task.spawn(function()
+		local startTime = os.clock()
+		while os.clock() - startTime < duration do
+			local x = math.random(-100, 100) / 1000 * intensity
+			local y = math.random(-100, 100) / 1000 * intensity
+			local z = math.random(-100, 100) / 1000 * intensity
+			Cam.CFrame = Cam.CFrame * CFrame.fromEulerAnglesXYZ(x, y, z)
+			RS.RenderStepped:Wait()
+		end
+	end)
+end
+
+-- =============================================================================
+-- 5. LÓGICA DE hitb.lua / hitb2.lua (Renderização de Hitboxes de Debug Locais)
+-- =============================================================================
+core.CreateDebugHitbox = function(size, offset, color)
+	local box = Instance.new("Part")
+	box.Size = size or Vector3.new(4, 6, 4)
+	box.Color = color or Color3.fromRGB(255, 0, 0)
+	box.Material = Enum.Material.Neon
+	box.Transparency = 0.6
+	box.CanCollide = false
+	box.Parent = workspace
+	
+	box.CFrame = HRP.CFrame * (offset or CFrame.new(0, 0, -3))
+	local weld = Instance.new("WeldConstraint", box)
+	weld.Part0 = box
+	weld.Part1 = HRP
+	
+	DB:AddItem(box, 0.3)
+	return box
+end
+
+-- =============================================================================
+-- 6. LÓGICA DO DogClient.lua + UntilDown/UntilUp (Mapeamento Puro de Inputs)
+-- =============================================================================
+local holdingM1 = false
+local sprintToggle = false
+local keyHoldTimers = {}
+
+-- Captura do Clique do Mouse (Ataque M1 básico contínuo)
+Mouse.Button1Down:Connect(function()
+	holdingM1 = true
+	repeat
+		if core.ProcessAction then
+			core.ProcessAction("attack", {g = "attack"})
+		end
+		task.wait(0.15) -- Cadência idêntica ao loop original do DogClient
+	until not holdingM1
+end)
+
+Mouse.Button1Up:Connect(function() holdingM1 = false end)
+
+-- Gerenciador do InputBegan (Teclado - Down)
+UIS.InputBegan:Connect(function(input, gpe)
+	if gpe then return end
+	local key = input.KeyCode
+	keyHoldTimers[key] = os.clock() -- Registra o tempo de início (Mecânica UntilDown)
+	
+	if not core.ProcessAction then return end
+	
+	if key == Enum.KeyCode.E then
+		sprintToggle = not sprintToggle
+		core.ProcessAction("sprint", {g = "sprint", on = sprintToggle})
+	elseif key == Enum.KeyCode.Q then
+		core.ProcessAction("attack2", {g = "attack2"})
+	elseif key == Enum.KeyCode.R then
+		core.ProcessAction("attack3", {g = "attack3"})
+	elseif key == Enum.KeyCode.C then
+		core.ProcessAction("crouch", {g = "crouch"})
+	elseif key == Enum.KeyCode.X then
+		core.ProcessAction("sit", {g = "sit"})
+	end
+end)
+
+-- Gerenciador do InputEnded (Teclado - Up / Mecânica UntilUp)
+UIS.InputEnded:Connect(function(input, gpe)
+	if gpe then return end
+	local key = input.KeyCode
+	
+	if keyHoldTimers[key] then
+		local duration = os.clock() - keyHoldTimers[key]
+		keyHoldTimers[key] = nil
+		
+		-- Se precisar enviar a duração do pressionamento para combos futuros:
+		if key == Enum.KeyCode.E and not sprintToggle then
+			if core.ProcessAction then core.ProcessAction("sprint", {g = "sprint", on = false}) end
+		end
+	end
+end)
+
+Cam.CameraSubject = Hum
+print("====== [CORE 1 COMPLETO] Todos os LocalScripts integrados sem perdas. ======")
