@@ -1,0 +1,529 @@
+-- =============================================================================
+-- MOTOR LOCUST - TOTALMENTE LOCAL COM SISTEMA DE ULTRA-SMOOTH BLENDING
+-- Transições totalmente orgânicas, suaves e sem cortes na troca de animações
+-- =============================================================================
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local Debris = game:GetService("Debris")
+
+local player = Players.LocalPlayer
+local oldCharacter = player.Character or player.CharacterAdded:Wait()
+local oldHrp = oldCharacter:WaitForChild("HumanoidRootPart")
+local spawnCFrame = oldHrp.CFrame
+
+-- 1. CARREGAMENTO DO MODELO ORIGINAL
+local success, loadedObjects = pcall(function()
+    return game:GetObjects(getcustomasset("locust.rbxmx"))
+end)
+
+if not success or not loadedObjects or #loadedObjects == 0 then
+    warn("[Locust] Erro ao carregar locust.rbxmx")
+    return
+end
+
+local Character = loadedObjects[1]
+Character:SetPrimaryPartCFrame(spawnCFrame)
+Character.Parent = workspace
+player.Character = Character
+
+local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+local Hrp = Character:FindFirstChild("HumanoidRootPart")
+
+oldCharacter:Destroy()
+
+-- Configurações físicas padrão
+for _, desc in ipairs(Character:GetDescendants()) do
+    if desc:IsA("BasePart") then
+        desc.Anchored = false
+    end
+end
+Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
+Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
+
+-- Localização das pastas nativas
+local AnimationFolder = Character.DogServer.Animations
+local soundsFolder = Character:FindFirstChild("sounds")
+local vocalsFolder = Character.DogServer:FindFirstChild("vocals")
+local speechFolder = Character.DogServer:FindFirstChild("speech")
+
+-- Mapeamento direto dos Bones
+local bones = {}
+for _, obj in ipairs(Character:GetDescendants()) do
+    if obj:IsA("Bone") then
+        bones[obj.Name] = obj
+    end
+end
+
+-- Tabela para rastrear Tweens ativos de cada Bone (evita sobreposição e travamentos)
+local activeBoneTweens = {}
+
+-- =============================================================================
+-- 2. MOTOR DE ANIMAÇÃO COM ULTRA-SMOOTH CROSSFADE BLENDING
+-- =============================================================================
+local activeAnimationName = ""
+local animationThreads = {}
+
+-- Função que aplica o Keyframe suavizando a pose via TweenService
+local function applyKeyframeTween(kf, duration, easingStyle)
+    if not duration or duration <= 0 then duration = 0.05 end 
+    -- Se não for definido um estilo de transição, usa Linear para o meio da animação
+    easingStyle = easingStyle or Enum.EasingStyle.Linear
+    
+    local tweenInfo = TweenInfo.new(duration, easingStyle, Enum.EasingDirection.InOut)
+    
+    for _, pose in ipairs(kf:GetDescendants()) do
+        if pose:IsA("Pose") then
+            local bone = bones[pose.Name]
+            if bone then
+                -- Cancela o tween anterior do osso imediatamente para não dar conflito físico
+                if activeBoneTweens[pose.Name] then
+                    activeBoneTweens[pose.Name]:Cancel()
+                end
+                
+                -- Cria e executa a interpolação suave
+                local tween = TweenService:Create(bone, tweenInfo, {Transform = pose.CFrame})
+                activeBoneTweens[pose.Name] = tween
+                tween:Play()
+            end
+        end
+    end
+end
+
+local function processKeyframeEvents(kfName)
+    if kfName == "step" then
+        local f1 = Character:FindFirstChild("footsteps") or (soundsFolder and soundsFolder:FindFirstChild("footsteps"))
+        local f2 = Character:FindFirstChild("footsteps2") or (soundsFolder and soundsFolder:FindFirstChild("footsteps2"))
+        if f1 and #f1:GetChildren() > 0 then
+            local s = f1:GetChildren()[math.random(1, #f1:GetChildren())]:Clone()
+            s.PlaybackSpeed = Random.new():NextNumber(0.6, 0.7)
+            s.Parent = Hrp
+            s:Play()
+            Debris:AddItem(s, 2)
+        end
+        if f2 and #f2:GetChildren() > 0 then
+            local s = f2:GetChildren()[math.random(1, #f2:GetChildren())]:Clone()
+            s.PlaybackSpeed = Random.new():NextNumber(0.7, 0.8)
+            s.Parent = Hrp
+            s:Play()
+            Debris:AddItem(s, 2)
+        end
+    end
+end
+
+local function PlayTrack(animName, loop)
+    local sequence = AnimationFolder:FindFirstChild(animName)
+    if not sequence then return end
+    
+    -- Se a animação solicitada já está ativa, deixa ela rodar
+    if activeAnimationName == animName then return end
+    
+    -- Definição do novo estado global da animação ativa
+    local previousAnimation = activeAnimationName
+    activeAnimationName = animName
+    
+    -- Mata as threads rodando de outras animações antigas para liberar os ossos
+    for name, thread in pairs(animationThreads) do
+        if name ~= animName then
+            task.cancel(thread)
+            animationThreads[name] = nil
+        end
+    end
+    
+    if animationThreads[animName] then
+        task.cancel(animationThreads[animName])
+    end
+    
+    animationThreads[animName] = task.spawn(function()
+        local keyframes = sequence:GetKeyframes()
+        table.sort(keyframes, function(a, b) return a.Time < b.Time end)
+        
+        local isFirstFrame = true
+        
+        repeat
+            for i = 1, #keyframes - 1 do
+                if activeAnimationName ~= animName then break end
+                
+                local kf = keyframes[i]
+                local nextKf = keyframes[i + 1]
+                local frameDuration = nextKf.Time - kf.Time
+                
+                if isFirstFrame then
+                    isFirstFrame = false
+                    -- Se veio de outra animação, aplica um blend inicial leve (Quad/Cubic) de 0.25 segundos
+                    -- Isso força uma transição gradual e ultra macia do estado antigo para o novo
+                    if previousAnimation ~= "" then
+                        applyKeyframeTween(kf, 0.25, Enum.EasingStyle.Cubic)
+                        task.wait(0.25)
+                        if activeAnimationName ~= animName then break end
+                    else
+                        applyKeyframeTween(kf, frameDuration, Enum.EasingStyle.Linear)
+                        task.wait(frameDuration)
+                    end
+                else
+                    applyKeyframeTween(kf, frameDuration, Enum.EasingStyle.Linear)
+                    task.wait(frameDuration)
+                end
+                
+                processKeyframeEvents(kf.Name)
+            end
+            
+            if not loop and activeAnimationName == animName then
+                applyKeyframeTween(keyframes[#keyframes], 0.15, Enum.EasingStyle.Quad)
+                break
+            end
+        until not loop or activeAnimationName ~= animName
+    end)
+end
+
+local function StopAllTracks()
+    activeAnimationName = ""
+    for name, thread in pairs(animationThreads) do
+        task.cancel(thread)
+    end
+    animationThreads = {}
+    
+    -- Retorno ultra macio dos ossos para a posição padrão de descanso (T-Pose / Pose Inicial)
+    local resetInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    for _, bone in pairs(bones) do
+        if activeBoneTweens[bone.Name] then activeBoneTweens[bone.Name]:Cancel() end
+        TweenService:Create(bone, resetInfo, {Transform = CFrame.new()}):Play()
+    end
+end
+
+-- =============================================================================
+-- 3. ESTADOS E ACÕES DO DOGSERVER
+-- =============================================================================
+local Mover = true
+local idling = false
+local cooldownList = {}
+local OriginalSpeed = 13
+local Speed = OriginalSpeed
+local RunType = 1 
+local sprint = false
+
+local function getCool(n) return table.find(cooldownList, n) ~= nil end
+local function addCooldown(te) if not table.find(cooldownList, te) then table.insert(cooldownList, te) end end
+local function removeCooldown(te) local idx = table.find(cooldownList, te) if idx then table.remove(cooldownList, idx) end end
+
+local function addsound(sound, parent)
+    if not sound then return nil end
+    local s = sound:Clone()
+    s.Parent = parent
+    s:Play()
+    task.spawn(function() s.Ended:Wait() s:Destroy() end)
+    return s
+end
+
+local function randomsound(folder)
+    if not folder then return nil end
+    local c = folder:GetChildren()
+    return c[math.random(1, #c)]
+end
+
+local function executarAcao(goal, args)
+    -- Ataque Básico
+    if goal == "attack" and not getCool("Attacking") and RunType ~= 3 and RunType ~= 4 then
+        addCooldown("Attacking")
+        local rawHitbox = Instance.new("Part", workspace)
+        rawHitbox.Transparency = 1
+        rawHitbox.CanCollide = false
+        rawHitbox.Size = Vector3.new(10, 12, 10)
+        rawHitbox.CFrame = Hrp.CFrame * CFrame.new(0, 0, -4)
+        
+        local weld = Instance.new("WeldConstraint", rawHitbox)
+        weld.Part0 = rawHitbox
+        weld.Part1 = Hrp
+        
+        for _, part in pairs(workspace:GetPartsInPart(rawHitbox)) do
+            if part and part.Parent and part.Parent:FindFirstChildWhichIsA("Humanoid") and part.Parent ~= Character then
+                local targetHrp = part.Parent:FindFirstChild("HumanoidRootPart")
+                if soundsFolder and targetHrp then
+                    local hitSound = soundsFolder:FindFirstChild("hit" .. math.random(1, 7))
+                    if hitSound then addsound(hitSound, targetHrp) end
+                end
+                break
+            end
+        end
+        task.wait(0.15)
+        rawHitbox:Destroy()
+        removeCooldown("Attacking")
+        
+    -- Jumpscare / Eat2
+    elseif goal == "attack2" and not getCool("Attacking") and RunType ~= 3 and RunType ~= 4 then
+        Mover = false
+        Speed = 2
+        StopAllTracks()
+        addCooldown("Attacking")
+        
+        local hitb = Instance.new("Part", workspace)
+        hitb.Transparency = 1
+        hitb.CanCollide = false
+        hitb.Size = Vector3.new(15, 20, 15)
+        hitb.CFrame = Hrp.CFrame * CFrame.new(0, -3, -8)
+        
+        local weld = Instance.new("WeldConstraint", hitb)
+        weld.Part0 = hitb
+        weld.Part1 = Hrp
+        
+        local target = nil
+        for _, v in pairs(workspace:GetPartsInPart(hitb)) do
+            if v and v.Parent and v.Parent:FindFirstChildWhichIsA("Humanoid") and v.Parent ~= Character then
+                target = v.Parent
+                break
+            end
+        end
+        
+        if target then
+            local targethrp = target:FindFirstChild("HumanoidRootPart")
+            if soundsFolder and targethrp then
+                local hitSound = soundsFolder:FindFirstChild("hit" .. math.random(1, 7))
+                if hitSound then addsound(hitSound, targethrp) end
+            end
+            
+            PlayTrack("jumpscare", false)
+            
+            task.delay(0.4, function()
+                if soundsFolder and soundsFolder:FindFirstChild("Hitsounds") and targethrp then
+                    addsound(randomsound(soundsFolder.Hitsounds), targethrp)
+                end
+            end)
+            
+            task.wait(1.5)
+        else
+            task.wait(1.1)
+        end
+        
+        hitb:Destroy()
+        Speed = OriginalSpeed
+        Mover = true
+        idling = false 
+        removeCooldown("Attacking")
+        
+    -- Rugido Manual
+    elseif goal == "attack3" and not getCool("Attacking") then
+        Mover = false
+        Speed = 0
+        StopAllTracks()
+        addCooldown("Attacking")
+        if speechFolder then
+            local roar = addsound(randomsound(speechFolder), Hrp)
+            if roar then roar.Name = "roar" end
+        end
+        task.wait(1.5)
+        Mover = true
+        Speed = OriginalSpeed
+        idling = false
+        removeCooldown("Attacking")
+
+    -- Sistema de TV
+    elseif goal == "placetv" then
+        local tvTemplate = Character:FindFirstChild("tv") or workspace:FindFirstChild("tv")
+        if tvTemplate then
+            local clonedTv = tvTemplate:Clone()
+            clonedTv.Parent = workspace
+            clonedTv:SetPrimaryPartCFrame(Hrp.CFrame * CFrame.new(0, 0, -6))
+            
+            task.spawn(function()
+                local glass = clonedTv:FindFirstChild("glass")
+                local tvscreen = clonedTv:FindFirstChild("defaultMaterial2")
+                local decal = tvscreen and tvscreen:FindFirstChild("Decal")
+                local decal2 = glass and glass:FindFirstChild("the")
+                local frames = glass and glass:FindFirstChild("LOCUST") and glass.LOCUST:GetChildren()
+                
+                if glass and decal and decal2 and frames then
+                    local glassIndex = 1
+                    for frame = 0, #frames - 1 do
+                        task.wait(0.02)
+                        pcall(function() decal2.Texture = glass.LOCUST[tostring(frame)].Texture end)
+                        if frame == 0 or frame == 50 or frame == 137 or frame == 201 then
+                            if glass:FindFirstChild("groan") then addsound(randomsound(glass.groan), glass) end
+                        end
+                        if frame == 35 or frame == 104 or frame == 178 or frame == 263 then
+                            if glass:FindFirstChild("thump") then addsound(randomsound(glass.thump), glass) end
+                            if not glass:FindFirstChild("glass" .. glassIndex) then
+                                if glass:FindFirstChild("glass") then addsound(randomsound(glass.glass), glass) end
+                                decal2.Transparency = 1
+                                if glass:FindFirstChild("GlassShatter") then glass.GlassShatter:Emit(165) end
+                                break
+                            else
+                                glass["glass" .. glassIndex].Decal.Transparency = 0
+                                glassIndex += 1
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+
+    -- Sprint
+    elseif goal == "sprint" and RunType ~= 3 and RunType ~= 4 then
+        if args and args.on == true then
+            sprint = true
+            OriginalSpeed = 45
+            Speed = OriginalSpeed
+            RunType = 2
+        else
+            sprint = false
+            RunType = 1
+            OriginalSpeed = 13
+            Speed = OriginalSpeed
+        end
+        idling = false
+
+    -- Agachar
+    elseif goal == "crouch" and not getCool("Attacking") and RunType ~= 4 then
+        Mover = false
+        Speed = 0
+        if getCool("crouching") then
+            addCooldown("Attacking")
+            removeCooldown("crouching")
+            PlayTrack("idle", true)
+            TweenService:Create(Humanoid, TweenInfo.new(0.6, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {HipHeight = 12.1}):Play()
+            task.wait(0.5)
+            Mover = true
+            RunType = 1
+            Speed = 13
+            OriginalSpeed = Speed
+            sprint = false
+            removeCooldown("Attacking")
+        else
+            addCooldown("crouching")
+            addCooldown("Attacking")
+            PlayTrack("crouchidle", true)
+            TweenService:Create(Humanoid, TweenInfo.new(0.6, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {HipHeight = 4.5}):Play()
+            task.wait(0.5)
+            Mover = true
+            Speed = 13
+            OriginalSpeed = Speed
+            RunType = 3
+            removeCooldown("Attacking")
+        end
+        idling = false
+
+    -- Sentar
+    elseif goal == "sit" and not getCool("Attacking") then
+        Mover = false
+        Speed = 0
+        removeCooldown("crouching")
+        
+        if getCool("sit") then
+            addCooldown("Attacking")
+            removeCooldown("sit")
+            PlayTrack("idle", true)
+            TweenService:Create(Humanoid, TweenInfo.new(0.6, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {HipHeight = 12.1}):Play()
+            task.wait(0.5)
+            Mover = true
+            RunType = 1
+            Speed = 13
+            OriginalSpeed = Speed
+            sprint = false
+            removeCooldown("Attacking")
+        else
+            addCooldown("sit")
+            addCooldown("Attacking")
+            PlayTrack("sit", true)            
+            task.wait(0.5)
+            removeCooldown("Attacking")
+            RunType = 4
+        end
+        idling = false
+    end
+end
+
+-- =============================================================================
+-- 4. MAQUINA DE VERIFICAÇÃO DE ESTADO SENSÍVEL E FLUIDA
+-- =============================================================================
+task.spawn(function()
+    while true do
+        task.wait()
+        Humanoid.WalkSpeed = Speed
+        
+        if Mover then
+            if Humanoid.MoveDirection == Vector3.new(0, 0, 0) then
+                if not idling then
+                    idling = true
+                    if RunType == 3 then
+                        PlayTrack("crouchidle", true)
+                    elseif RunType == 4 then
+                        PlayTrack("sit", true)
+                    else
+                        PlayTrack("idle", true)
+                    end
+                end
+            else
+                if idling then
+                    idling = false
+                    if RunType == 1 then
+                        PlayTrack("walk", true)
+                    elseif RunType == 2 then
+                        PlayTrack("run", true)
+                    elseif RunType == 3 then
+                        PlayTrack("crouchwalk", true)
+                    end
+                end
+            end
+        end
+    end
+end)
+
+-- Sistema de Vocais Temporizados
+if vocalsFolder then
+    task.spawn(function()
+        while true do
+            task.wait(math.random(6, 15))
+            local vocals = vocalsFolder:GetChildren()
+            if #vocals > 0 and activeAnimationName ~= "jumpscare" then
+                local vocal = vocals[math.random(1, #vocals)]:Clone()
+                vocal.Parent = Hrp
+                vocal.PlaybackSpeed += Random.new():NextNumber(-0.1, 0.2)
+                vocal:Play()
+                vocal.Ended:Wait()
+                vocal:Destroy()
+            end
+        end
+    end)
+end
+
+-- =============================================================================
+-- 5. CAPTURA DOS INPUTS DO LOCALPLAYER
+-- =============================================================================
+local toggleSprint = false
+local holdingAttack = false
+local mouse = player:GetMouse()
+
+mouse.Button1Down:Connect(function()
+    holdingAttack = true
+    repeat
+        executarAcao("attack")
+        task.wait(0.1)
+    until not holdingAttack
+end)
+
+mouse.Button1Up:Connect(function()
+    holdingAttack = false
+end)
+
+UserInputService.InputBegan:Connect(function(input, gpe)
+    if gpe then return end
+    
+    if input.KeyCode == Enum.KeyCode.E then
+        toggleSprint = not toggleSprint
+        executarAcao("sprint", { on = toggleSprint })
+    elseif input.KeyCode == Enum.KeyCode.Q then
+        executarAcao("attack2")
+    elseif input.KeyCode == Enum.KeyCode.R then
+        executarAcao("attack3")
+    elseif input.KeyCode == Enum.KeyCode.T then
+        executarAcao("placetv")
+    elseif input.KeyCode == Enum.KeyCode.C then
+        executarAcao("crouch")
+    elseif input.KeyCode == Enum.KeyCode.X then
+        executarAcao("sit")
+    end
+end)
+
+workspace.CurrentCamera.CameraSubject = Character.Head
