@@ -1,250 +1,138 @@
 -- =============================================================================
--- MOTOR LOCUST - LOADSTRING 1: NÚCLEO E GERENCIAMENTO DE ESTADO GLOBAL
+-- MOTOR LOCUST V2 - CORE (CORRIGIDO PARA COMPILAÇÃO CLEAN CLIENT)
 -- =============================================================================
+shared.LocustCore = {}
+local core = shared.LocustCore
 
--- Limpeza de sessões globais anteriores para evitar duplicações na memória
-if shared.LocustCore then
-	pcall(function() shared.LocustCore.Shutdown() end)
-end
+local Character = script.Parent
+local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+local Hrp = Character:FindFirstChild("HumanoidRootPart")
+local Event = Character:WaitForChild("RemoteEvent")
+local Reference = Character:FindFirstChild("RootPart")
 
-local Plrs = game:GetService("Players")
-local RS = game:GetService("RunService")
-local TS = game:GetService("TweenService")
-local DB = game:GetService("Debris")
+-- Armazena os componentes no ambiente global compartilhado
+core.Character = Character
+core.Humanoid = Humanoid
+core.HRP = Hrp
+core.INITIAL_HIPHEIGHT = Humanoid and Humanoid.HipHeight or 12.1
 
-local LP = Plrs.LocalPlayer
-local originalChar = LP.Character or LP.CharacterAdded:Wait()
-local startCFrame = originalChar:WaitForChild("HumanoidRootPart").CFrame
+local Animator = require(script.Animator)
+local AnimationFolder = script.Animations
+AnimationFolder.Parent = nil
 
--- 1. CARREGAMENTO E SUBSTITUIÇÃO DO PERSONAGEM (LOCUST)
-local success, loadedObjects = pcall(function() 
-	return game:GetObjects(getcustomasset("locust.rbxmx")) 
+task.spawn(function()
+	local parent = Character.Parent
+	repeat task.wait() until Character.Parent ~= parent
+	AnimationFolder:Destroy()
 end)
 
-if not success or not loadedObjects or #loadedObjects == 0 then
-	error("Erro crítico: Falha ao carregar o asset customizado 'locust.rbxmx'.")
-end
+core.State = {
+	CooldownList = {},
+	Mover = true,
+	Idling = false,
+	Stunned = false,
+	OriginalSpeed = 13,
+	Speed = 13,
+	RunType = 1,
+	SprintActive = false
+}
+local state = core.State
 
-local Locust = loadedObjects[1]
-Locust:SetPrimaryPartCFrame(startCFrame)
-Locust.Parent = workspace
-LP.Character = Locust
-
-local Hum = Locust:FindFirstChildWhichIsA("Humanoid")
-local HRP = Locust:FindFirstChild("HumanoidRootPart")
-local Head = Locust:FindFirstChild("Head")
-
--- Destrói o personagem antigo com segurança
-originalChar:Destroy()
-
--- 2. MAPEAMENTO E CAPTURA FÍSICA INICIAL
-local INITIAL_HIPHEIGHT = Hum.HipHeight
-local INITIAL_PART_STATES = {}
-
-for _, descendant in ipairs(Locust:GetDescendants()) do 
-	if descendant:IsA("BasePart") then 
-		descendant.Anchored = false 
-		if descendant:IsA("MeshPart") then
-			descendant.Transparency = 0
-		end
-		INITIAL_PART_STATES[descendant] = {
-			CanCollide = descendant.CanCollide,
-			Massless = descendant.Massless
-		}
-	end 
-end
-
--- Desativa físicas indesejadas nativas do Roblox para o Locust
-Hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
-Hum:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
-Hum:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
-
--- Localização das pastas internas do modelo
-local DogServer = Locust:FindFirstChild("DogServer")
-local AnimFolder = DogServer and DogServer:FindFirstChild("Animations")
-local Sounds = Locust:FindFirstChild("sounds")
-local Vocals = DogServer and DogServer:FindFirstChild("vocals")
-local Speech = DogServer and DogServer:FindFirstChild("speech")
-
--- Mapeamento dos Bones para o motor de interpolação
-local BonesMap = {}
-for _, bone in ipairs(Locust:GetDescendants()) do 
-	if bone:IsA("Bone") then 
-		BonesMap[bone.Name] = bone 
-	end 
-end
-
--- 3. EXPOSIÇÃO DA ESTRUTURA GLOBAL (Ponte de comunicação para os próximos Loadstrings)
-shared.LocustCore = {
-	Character = Locust,
-	Humanoid = Hum,
-	HRP = HRP,
-	Head = Head,
-	DogServer = DogServer,
-	AnimationsFolder = AnimFolder,
-	Sounds = Sounds,
-	Vocals = Vocals,
-	Speech = Speech,
-	INITIAL_HIPHEIGHT = INITIAL_HIPHEIGHT,
-	INITIAL_PART_STATES = INITIAL_PART_STATES,
-	
-	-- Variáveis de controle de movimento e estado dinâmico
-	State = {
-		Mover = true,
-		Idling = false,
-		Stunned = false,
-		OriginalSpeed = 13,
-		Speed = 13,
-		[span_2](start_span)[span_3](start_span)RunType = 1, -- 1: Walk, 2: Run, 3: Crouch, 4: Sit[span_2](end_span)[span_3](end_span)
-		SprintActive = false,
-		CurrentAnimation = "",
-		CooldownList = {}
-	},
-	
-	-- Conexões internas que precisam ser limpas no reinício
-	Connections = {}
+local Animations = {
+	CrouchIdle = Animator:LoadAnimation(Character, AnimationFolder.crouchidle),
+	CrouchWalk = Animator:LoadAnimation(Character, AnimationFolder.crouchwalk),
+	Sit = Animator:LoadAnimation(Character, AnimationFolder.sit),
+	Eat2 = Animator:LoadAnimation(Character, AnimationFolder.jumpscare),
+	Idle = Animator:LoadAnimation(Character, AnimationFolder.idle),
+	Walk = Animator:LoadAnimation(Character, AnimationFolder.walk),
+	Run = Animator:LoadAnimation(Character, AnimationFolder.run),
+	TV = Animator:LoadAnimation(Character, AnimationFolder.spawn),
 }
 
-local core = shared.LocustCore
-local state = core.State
-local activeTweens = {}
-local animThreads = {}
-local keyframeEvent = Instance.new("BindableEvent")
-
--- 4. MOTOR CUSTOMIZADO DE ANIMAÇÕES POR BONES (Internalizado no Core)
-local function akt(poseKeyframe, duration, easingStyle)
-	duration = duration > 0 and duration or 0.05
-	local tweenInfo = TweenInfo.new(duration, easingStyle or Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
-	for _, pose in ipairs(poseKeyframe:GetDescendants()) do
-		if pose:IsA("Pose") and BonesMap[pose.Name] then
-			if activeTweens[pose.Name] then activeTweens[pose.Name]:Cancel() end
-			local twin = TS:Create(BonesMap[pose.Name], tweenInfo, {Transform = pose.CFrame})
-			activeTweens[pose.Name] = twin
-			twin:Play()
-		end
-	end
-end
-
-local function fireKeyframeEvent(keyframeName)
-	keyframeEvent:Fire(keyframeName)
-	if keyframeName == "step" then
-		local f1 = Locust:FindFirstChild("footsteps") or (Sounds and Sounds:FindFirstChild("footsteps"))
-		local f2 = Locust:FindFirstChild("footsteps2") or (Sounds and Sounds:FindFirstChild("footsteps2"))
-		if f1 and #f1:GetChildren() > 0 then
-			local s = f1:GetChildren()[math.random(1, #f1:GetChildren())]:Clone()
-			s.PlaybackSpeed = Random.new():NextNumber(0.6, 0.7); s.Parent = HRP; s:Play(); DB:AddItem(s, 2)
-		end
-		if f2 and #f2:GetChildren() > 0 then
-			local s = f2:GetChildren()[math.random(1, #f2:GetChildren())]:Clone()
-			s.PlaybackSpeed = Random.new():NextNumber(0.7, 0.8); s.Parent = HRP; s:Play(); DB:AddItem(s, 2)
-		end
-	end
-end
-
--- API Global de Animação para uso externo
-core.PlayAnimation = function(animName, isLooping)
-	local sequence = AnimFolder and AnimFolder:FindFirstChild(animName)
-	if not sequence or state.CurrentAnimation == animName then return end
-	
-	local previousAnim = state.CurrentAnimation
-	state.CurrentAnimation = animName
-	
-	for name, thread in pairs(animThreads) do 
-		if name ~= animName then task.cancel(thread); animThreads[name] = nil end 
-	end
-	if animThreads[animName] then task.cancel(animThreads[animName]) end
-	
-	animThreads[animName] = task.spawn(function()
-		local keyframes = sequence:GetKeyframes()
-		table.sort(keyframes, function(a, b) return a.Time < b.Time end)
-		local isFirstFrame = true
-		repeat
-			for i = 1, #keyframes - 1 do
-				if state.CurrentAnimation ~= animName then break end
-				local currentKf = keyframes[i]
-				local nextKf = keyframes[i + 1]
-				local frameDuration = nextKf.Time - currentKf.Time
-				
-				if isFirstFrame then
-					isFirstFrame = false
-					if previousAnim ~= "" then 
-						akt(currentKf, 0.25, Enum.EasingStyle.Cubic)
-						task.wait(0.25)
-					else 
-						akt(currentKf, frameDuration, Enum.EasingStyle.Linear)
-						task.wait(frameDuration) 
-					end
-				else 
-					akt(currentKf, frameDuration, Enum.EasingStyle.Linear)
-					task.wait(frameDuration) 
-				end
-				fireKeyframeEvent(currentKf.Name)
-			end
-			if not isLooping and state.CurrentAnimation == animName then 
-				akt(keyframes[#keyframes], 0.15, Enum.EasingStyle.Quad)
-				break 
-			end
-		until not isLooping or state.CurrentAnimation ~= animName
-	end)
-end
+Animations.Run:AdjustSpeed(4)
+Animations.Walk:AdjustSpeed(2.5)
+Animations.CrouchWalk:AdjustSpeed(2.5)
+Animations.CrouchIdle:AdjustSpeed(2.5)
+Animations.TV:AdjustSpeed(2.5)
+Animations.Eat2:AdjustSpeed(2.5)
 
 core.StopAnimation = function()
-	state.CurrentAnimation = ""
-	for name, thread in pairs(animThreads) do task.cancel(thread) end
-	animThreads = {}
-	local tInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	for _, bone in pairs(BonesMap) do
-		if activeTweens[bone.Name] then activeTweens[bone.Name]:Cancel() end
-		TS:Create(bone, tInfo, {Transform = CFrame.new()}):Play()
+	for _, v in pairs(Animations) do
+		if v.IsPlaying then v:Stop() end
 	end
 end
 
-core.KeyframeEvent = keyframeEvent.Event
+-- Correção da Função VFX (Removido as tipagens que quebravam o loadstring)
+local function checkPart(txt)
+	local succ, result = pcall(function()
+		if txt:IsA("Part") or txt:IsA("MeshPart") or txt:IsA("Model") or txt:IsA("UnionOperation") then 
+			return true 
+		end
+		return false
+	end)
+	return succ and result
+end
 
--- 5. ENGINE DE MOVIMENTAÇÃO EMBUTIDA (Garante WalkSpeed dinâmico baseado no estado global)
-table.insert(core.Connections, RS.Heartbeat:Connect(function()
-	if Hum and Hum.Parent then
-		Hum.WalkSpeed = state.Speed
-		if state.Mover then
-			if Hum.MoveDirection == Vector3.new(0, 0, 0) then
-				if not state.Idling then
-					state.Idling = true
-					core.StopAnimation()
-					if state.RunType == 3 then core.PlayAnimation("crouchidle", true)
-					elseif state.RunType == 4 then core.PlayAnimation("sit", true)
-					else core.PlayAnimation("idle", true) end
-				end
-			else
-				if state.Idling then
-					state.Idling = false
-					core.StopAnimation()
-					if state.RunType == 1 then core.PlayAnimation("walk", true)
-					elseif state.RunType == 2 then core.PlayAnimation("run", true)
-					elseif state.RunType == 3 then core.PlayAnimation("crouchwalk", true) end
+core.Vfx = function(parent, var, emitC, cframe)
+	local instanc = checkPart(var) and var or parent:FindFirstChild(var) or var
+	if not instanc then return end
+	
+	local instance = instanc:Clone()
+	instance.CFrame = cframe
+	instance.Parent = workspace
+	
+	for _, particle in pairs(instance:GetDescendants()) do
+		if particle:IsA("ParticleEmitter") then
+			particle:Emit(particle:GetAttribute("EmitCount") or emitC or 15)
+		end
+	end
+	game.Debris:AddItem(instance, 10)
+	return instance
+end
+
+-- Loop de Movimentação Corrigido com todos os 'end' alinhados
+task.spawn(function()
+	while true do
+		task.wait()
+		if Humanoid then
+			Humanoid.WalkSpeed = state.Speed
+			if state.Mover then
+				if Humanoid.MoveDirection == Vector3.new(0, 0, 0) then
+					if not state.Idling then
+						state.Idling = true
+						core.StopAnimation()
+						if state.RunType == 3 then Animations.CrouchIdle:Play()
+						elseif state.RunType == 4 then Animations.Sit:Play()
+						else Animations.Idle:Play() end
+					end
+				else
+					if state.Idling then
+						state.Idling = false
+						core.StopAnimation()
+						if state.RunType == 1 then Animations.Walk:Play()
+						elseif state.RunType == 2 then Animations.Run:Play()
+						elseif state.RunType == 3 then Animations.CrouchWalk:Play() end
+					end
+					
+					-- Garante que a animação correta continue tocando se parar do nada
+					if state.RunType == 1 and not Animations.Walk.IsPlaying then
+						core.StopAnimation(); Animations.Walk:Play()
+					elseif state.RunType == 2 and not Animations.Run.IsPlaying then
+						core.StopAnimation(); Animations.Run:Play()
+					elseif state.RunType == 3 and not Animations.CrouchWalk.IsPlaying then
+						core.StopAnimation(); Animations.CrouchWalk:Play()
+					end
 				end
 			end
 		end
-	end
-end))
-
--- Módulo de CameraOffset em tempo real integrado
-RS:BindToRenderStep("LocustCamera", Enum.RenderPriority.Camera.Value - 1, function()
-	if HRP and Head and Hum and Hum.Parent then
-		local targetOffset = (HRP.CFrame + Vector3.new(0, 1.5, 0)):PointToObjectSpace(Head.CFrame.Position)
-		TS:Create(Hum, TweenInfo.new(0.3, Enum.EasingStyle.Linear), {CameraOffset = targetOffset}):Play()
 	end
 end)
 
--- Mecanismo de desligamento limpo (Shutdown) caso o script seja reexecutado
-core.Shutdown = function()
-	RS:UnbindFromRenderStep("LocustCamera")
-	for _, connection in ipairs(core.Connections) do
-		if connection.Connected then connection:Disconnect() end
-	end
-	core.StopAnimation()
-	keyframeEvent:Destroy()
-end
+-- Expõe referências de pastas para o Actions (Módulo 2) localizar os sons
+core.DogServer = script
+core.Sounds = script:FindFirstChild("sounds")
+core.Vocals = script:FindFirstChild("vocals")
+core.Speech = script:FindFirstChild("speech")
+core.KeyframeEvent = Animations.Eat2.KeyframeReached
 
--- Fixador de câmera no novo Humanoid
-workspace.CurrentCamera.CameraSubject = Hum
-
+print("-> [LOADSTRING 1] Core compilado e carregado com sucesso.")
