@@ -1,0 +1,69 @@
+-- =============================================================================
+-- MOTOR LOCUST - LOADSTRING 3: INTERPRETADOR DE INPUTS (PURE CLIENT)
+-- =============================================================================
+local core = shared.LocustCore
+if not core or not core.ProcessAction then 
+	error("Erro: O Loadstring 2 precisa ser executado e configurado antes do Loadstring 3.") 
+end
+
+local Plr = game.Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+local Mouse = Plr:GetMouse()
+
+-- Expõe o Mouse globalmente no Core para o Loadstring 2 ler diretamente se precisar de CFrame/Posição
+core.Mouse = Mouse
+
+-- Desabilita estados físicos indesejados no Humanóide Local
+local Hum = core.Humanoid
+if Hum then
+	Hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+	Hum:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
+	Hum:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
+end
+
+-- Controle de clique contínuo do Mouse (Ataque M1 básico)
+local holdingM1 = false
+Mouse.Button1Down:Connect(function()
+	holdingM1 = true
+	repeat
+		core.ProcessAction("attack", {g = "attack"})
+		task.wait(0.1)
+	until not holdingM1
+end)
+
+Mouse.Button1Up:Connect(function()
+	holdingM1 = false
+end)
+
+-- Mapeamento e Escuta Direta do Teclado
+local sprintToggle = false
+
+UIS.InputBegan:Connect(function(input, gpe)
+	if gpe then return end -- Ignora se o jogador estiver digitando no chat
+	
+	local key = input.KeyCode
+
+	if key == Enum.KeyCode.E then
+		sprintToggle = not sprintToggle
+		core.ProcessAction("sprint", {g = "sprint", on = sprintToggle})
+		
+	elseif key == Enum.KeyCode.Q then
+		core.ProcessAction("attack2", {g = "attack2"})
+		
+	elseif key == Enum.KeyCode.T then
+		core.ProcessAction("placetv", {g = "placetv"})
+		
+	elseif key == Enum.KeyCode.C then
+		core.ProcessAction("crouch", {g = "crouch"})
+		
+	elseif key == Enum.KeyCode.X then
+		core.ProcessAction("sit", {g = "sit"})
+		
+	elseif key == Enum.KeyCode.R then
+		core.ProcessAction("manual", {g = "manual"})
+		
+	elseif key == Enum.KeyCode.H then
+		core.ProcessAction("manual2", {g = "manual2"})
+	end
+end)
+
