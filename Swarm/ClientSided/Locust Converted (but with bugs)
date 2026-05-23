@@ -1,5 +1,5 @@
 -- =============================================================================
--- MOTOR LOCUST - INTEGRAL CORRIGIDO (SEM TV & UNSIT VIA RESET DE ESTADO INICIAL)
+-- ALL CREDITS: require(119819780800418).MorphMonster("username", "locust") CREDITS TO DOCTORNOWHERE COOL ARG MAKER
 -- =============================================================================
 local Plrs = game:GetService("Players")
 local RS = game:GetService("RunService")
