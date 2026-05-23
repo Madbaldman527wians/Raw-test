@@ -1,0 +1,2 @@
+install the locust.rbxmx.zip
+unzip it and move to storage/emulated/0/YourExec/workspace
