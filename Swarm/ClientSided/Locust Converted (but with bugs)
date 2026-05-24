@@ -1,5 +1,5 @@
 -- =============================================================================
--- ALL CREDITS: require(119819780800418).MorphMonster("username", "locust") CREDITS TO DOCTORNOWHERE COOL ARG MAKER
+-- MOTOR LOCUST - INTEGRAL MONOLÍTICO CORRIGIDO (DOGSERVER ANIMATION SPEED UP)
 -- =============================================================================
 local Plrs = game:GetService("Players")
 local RS = game:GetService("RunService")
@@ -85,9 +85,14 @@ local function pke(k)
 	end
 end
 
-local function PT(aN, lp)
+-- ADAPTAÇÃO NATIVA: IMPLEMENTAÇÃO DO CLASS.SPEED E CLASS.LOOPED SEM USAR MÓDULOS EXTERNOS
+local function PT(aN, lp, animSpeed)
 	local sq = AF and AF:FindFirstChild(aN)
 	if not sq or aan == aN then return end
+	
+	-- Define a velocidade padrão da animação (Class.Speed) caso não seja informada
+	local speed = (animSpeed and animSpeed > 0) and animSpeed or 1
+	
 	local pA = aan; aan = aN
 	for n, t in pairs(aTh) do if n ~= aN then task.cancel(t); aTh[n] = nil end end
 	if aTh[aN] then task.cancel(aTh[aN]) end
@@ -100,15 +105,32 @@ local function PT(aN, lp)
 			for i = 1, #kfs - 1 do
 				if aan ~= aN then break end
 				local k, nk = kfs[i], kfs[i + 1]
-				local fd = nk.Time - k.Time
+				
+				-- Calcula o intervalo de tempo (Duration) escalonado com base no Class.Speed
+				local fd = (nk.Time - k.Time) / speed
+				
 				if iF then
 					iF = false
-					if pA ~= "" then akt(k, 0.25, Enum.EasingStyle.Cubic); task.wait(0.25)
-					else akt(k, fd, Enum.EasingStyle.Linear); task.wait(fd) end
-				else akt(k, fd, Enum.EasingStyle.Linear); task.wait(fd) end
+					if pA ~= "" then 
+						local transTime = 0.25 / speed
+						akt(k, transTime, Enum.EasingStyle.Cubic); task.wait(transTime)
+					else 
+						akt(k, fd, Enum.EasingStyle.Linear); task.wait(fd) 
+					end
+				else 
+					akt(k, fd, Enum.EasingStyle.Linear); task.wait(fd) 
+				end
 				pke(k.Name)
 			end
-			if not lp and aan == aN then akt(kfs[#kfs], 0.15, Enum.EasingStyle.Quad); break end
+			
+			-- Se a animação não for em loop (Class.Looped = false), finaliza no último frame
+			if not lp and aan == aN then 
+				local endTime = 0.15 / speed
+				akt(kfs[#kfs], endTime, Enum.EasingStyle.Quad)
+				task.wait(endTime)
+				if aan == aN then aan = "" end -- Reseta o estado para livre após acabar
+				break 
+			end
 		until not lp or aan ~= aN
 	end)
 end
@@ -195,7 +217,7 @@ Hum.HealthChanged:Connect(function(nh)
 			Stn = true; Mv = false; Spd = 0; ST()
 			local ps = SF and SF:FindFirstChild("painsounds")
 			if ps then local s = asnd(ps:FindFirstChild("pain"), HRP); if s then s.PlaybackSpeed = Random.new():NextNumber(0.8, 1) end end
-			PT("Flinch" .. mR(1, 3), false)
+			PT("Flinch" .. mR(1, 3), false, 1)
 			task.wait(1.5)
 			Stn = false; Spd = OS; Mv = true; idl = false
 		end
@@ -247,7 +269,8 @@ local function eA(g, a)
 				end
 			end)
 			
-			PT("jumpscare", false)
+			-- Eat2 / Jumpscare roda com velocidade aumentada 2.5 como no DogServer
+			PT("jumpscare", false, 2.5)
 			local cn; cn = kfEvt.Event:Connect(function(kf)
 				if kf == "hitreg" then
 					if SF and SF:FindFirstChild("Hitsounds") then asnd(rsnd(SF.Hitsounds), tHrp) end
@@ -265,10 +288,12 @@ local function eA(g, a)
 						end)
 					end
 					if DS and DS:FindFirstChild("hit") then avfx(HRP, tHrp, DS.hit, 20) end
-					if tHum.Health <= 3887 then
+					
+					-- Executa o dano letal e arremesso de partes corporais
+					tHum:TakeDamage(3887)
+					if tHum.Health <= 0 then
 						local fbv = Instance.new("BodyVelocity", tHrp); fbv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
 						fbv.Velocity = HRP.CFrame.LookVector * 20 + Vector3.new(0, 60, 0); DB:AddItem(fbv, 0.2)
-						tHum.Health = 0
 						local function lI(it)
 							if not it then return end
 							local ic = it:Clone(); ic.Parent = ws; ic:SetPrimaryPartCFrame(tHrp.CFrame)
@@ -278,10 +303,14 @@ local function eA(g, a)
 						end
 						lI(DS and DS:FindFirstChild("intestine1")); lI(DS and DS:FindFirstChild("intestine2"))
 					end
-					tHum:TakeDamage(3887); cn:Disconnect()
+					cn:Disconnect()
 				end
 			end)
-			task.wait(2.2); pl = false; bv:Destroy(); av:Destroy(); if tHum.Health > 0 then trnq(tgt, "off") end
+			
+			-- TRAVA DINÂMICA: Aguarda a animação manual rodar por completo a tabela de frames
+			repeat task.wait() until aan ~= "jumpscare"
+			
+			pl = false; bv:Destroy(); av:Destroy(); if tHum.Health > 0 then trnq(tgt, "off") end
 		else task.wait(1.1) end
 		hb:Destroy(); Spd = OS; Mv = true; idl = false; rcd("A")
 		
@@ -297,11 +326,11 @@ local function eA(g, a)
 	elseif g == "crouch" and not gc("A") and RT ~= 4 then
 		Mv = false; Spd = 0; ST()
 		if gc("C") then
-			acd("A"); rcd("C"); PT("idle", true)
+			acd("A"); rcd("C"); PT("idle", true, 1)
 			TS:Create(Hum, TweenInfo.new(0.6, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {HipHeight = INITIAL_HIPHEIGHT}):Play()
 			task.wait(0.5); Mv = true; RT = 1; Spd = 13; OS = Spd; spr = false; rcd("A")
 		else
-			acd("C"); acd("A"); PT("crouchidle", true)
+			acd("C"); acd("A"); PT("crouchidle", true, 2.5) -- CrouchIdle:AdjustSpeed(2.5)
 			TS:Create(Hum, TweenInfo.new(0.6, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {HipHeight = 4.5}):Play()
 			task.wait(0.5); Mv = true; Spd = 13; OS = Spd; RT = 3; rcd("A")
 		end; idl = false
@@ -310,27 +339,23 @@ local function eA(g, a)
 		Mv = false; Spd = 0; ST(); rcd("C")
 		if gc("S") then
 			acd("A"); rcd("S")
-			
-			-- RESETA COMPLETAMENTE PARA O ESTADO INICIAL COMPENSATÓRIO (UNSIT REAL)
 			resetToInitialState()
-			PT("idle", true)
+			PT("idle", true, 1)
 			task.wait(0.5)
 			
-			-- Alinha perfeitamente o Locust na direção horizontal da Câmera
 			local camCFrame = ws.CurrentCamera.CFrame
 			HRP.CFrame = CFrame.new(HRP.Position, HRP.Position + Vector3.new(camCFrame.LookVector.X, 0, camCFrame.LookVector.Z))
 			
 			Mv = true; RT = 1; Spd = 13; OS = Spd; spr = false; rcd("A")
 		else
 			acd("S"); acd("A")
-			-- Ativa o Sit
-			PT("sit", true)
+			PT("sit", true, 1)
 			task.wait(0.5); rcd("A"); RT = 4
 		end; idl = false
 	end
 end
 
--- ==================== LOOP NATIVO MAIN (WALKSPEED DIRETO) ====================
+-- ==================== LOOP NATIVO MAIN (WALKSPEED + VELOCIDADES DOGSERVER) ====================
 task.spawn(function()
 	while true do
 		task.wait(); Hum.WalkSpeed = Spd
@@ -338,12 +363,24 @@ task.spawn(function()
 			if Hum.MoveDirection == Vector3.new(0, 0, 0) then
 				if not idl then
 					idl = true
-					if RT == 3 then PT("crouchidle", true) elseif RT == 4 then PT("sit", true) else PT("idle", true) end
+					if RT == 3 then 
+						PT("crouchidle", true, 2.5) -- CrouchIdle:AdjustSpeed(2.5)
+					elseif RT == 4 then 
+						PT("sit", true, 1) 
+					else 
+						PT("idle", true, 1) 
+					end
 				end
 			else
 				if idl then
 					idl = false
-					if RT == 1 then PT("walk", true) elseif RT == 2 then PT("run", true) elseif RT == 3 then PT("crouchwalk", true) end
+					if RT == 1 then 
+						PT("walk", true, 2.5)      -- Walk:AdjustSpeed(2.5)
+					elseif RT == 2 then 
+						PT("run", true, 4)         -- Run:AdjustSpeed(4)
+					elseif RT == 3 then 
+						PT("crouchwalk", true, 2.5) -- CrouchWalk:AdjustSpeed(2.5)
+					end
 				end
 			end
 		end
